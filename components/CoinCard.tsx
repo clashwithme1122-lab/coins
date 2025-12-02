@@ -1,0 +1,70 @@
+import { motion } from 'framer-motion'
+import { Star } from 'lucide-react'
+import Link from 'next/link'
+
+interface Coin {
+  id: number
+  title: string
+  price: string
+  weight: string
+  year: string
+  description: string
+  frontImage: string
+  backImage: string
+  weightImage: string
+  historicalValue?: string
+}
+
+interface CoinCardProps {
+  coin: Coin
+  index?: number
+}
+
+export default function CoinCard({ coin, index = 0 }: CoinCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      whileHover={{ y: -10, scale: 1.02 }}
+      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
+    >
+      {/* Coin Image */}
+      <div className="relative h-48 bg-gray-100 overflow-hidden">
+        <motion.img
+          src={coin.frontImage}
+          alt={`${coin.title} - Front`}
+          className="w-full h-full object-cover"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3 }}
+        />
+        <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+          {coin.price}
+        </div>
+      </div>
+
+      {/* Coin Details */}
+      <div className="p-6">
+        <h3 className="text-lg font-semibold mb-2 line-clamp-1">{coin.title}</h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{coin.description}</p>
+        
+        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+          <span>{coin.year}</span>
+          <span>{coin.weight}</span>
+        </div>
+
+        <div className="flex space-x-3">
+          <Link 
+            href={`/coins/${coin.id}`}
+            className="flex-1 bg-purple-600 text-white text-center py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 text-sm"
+          >
+            View Details
+          </Link>
+          <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+            <Star className="w-4 h-4 text-gray-400" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  )
+}

@@ -1,0 +1,92 @@
+[
+    {
+        "slug": "intro-to-bitcoin",
+        "title": "Introduction to Bitcoin: The Future of Digital Currency",
+        "excerpt": "A comprehensive guide to understanding Bitcoin, the world's first cryptocurrency and how it's revolutionizing the financial landscape.",
+        "date": "2025-11-28",
+        "author": "Alex Chen",
+        "cover": "/assets/placeholder-hero.jpg",
+        "content": "Bitcoin represents a paradigm shift in how we think about money and financial transactions...",
+        "category": "Basics",
+        "tags": [
+            "bitcoin",
+            "cryptocurrency",
+            "blockchain"
+        ]
+    },
+    {
+        "slug": "crypto-trading-strategies",
+        "title": "Advanced Crypto Trading Strategies for 2025",
+        "excerpt": "Learn proven trading strategies and risk management techniques for successful cryptocurrency trading in today's volatile market.",
+        "date": "2025-11-25",
+        "author": "Sarah Johnson",
+        "cover": "/assets/placeholder-hero.jpg",
+        "content": "Successful crypto trading requires more than just luck...",
+        "category": "Trading",
+        "tags": [
+            "trading",
+            "strategy",
+            "risk-management"
+        ]
+    },
+    {
+        "slug": "defi-ecosystem-guide",
+        "title": "The Complete DeFi Ecosystem Guide",
+        "excerpt": "Explore the decentralized finance revolution and understand how DeFi protocols are reshaping traditional banking.",
+        "date": "2025-11-22",
+        "author": "Mike Williams",
+        "cover": "/assets/placeholder-hero.jpg",
+        "content": "Decentralized Finance (DeFi) is one of the fastest-growing sectors in cryptocurrency...",
+        "category": "DeFi",
+        "tags": [
+            "defi",
+            "ethereum",
+            "smart-contracts"
+        ]
+    },
+    {
+        "slug": "nft-marketplace-analysis",
+        "title": "NFT Marketplace Analysis: Trends and Opportunities",
+        "excerpt": "Deep dive into the NFT market dynamics, emerging trends, and investment opportunities in digital collectibles.",
+        "date": "2025-11-20",
+        "author": "Emily Davis",
+        "cover": "/assets/placeholder-hero.jpg",
+        "content": "Non-Fungible Tokens (NFTs) have transformed the digital art world...",
+        "category": "NFTs",
+        "tags": [
+            "nft",
+            "digital-art",
+            "collectibles"
+        ]
+    },
+    {
+        "slug": "crypto-security-best-practices",
+        "title": "Crypto Security Best Practices: Protecting Your Digital Assets",
+        "excerpt": "Essential security measures every crypto investor should know to safeguard their digital assets from threats.",
+        "date": "2025-11-18",
+        "author": "David Lee",
+        "cover": "/assets/placeholder-hero.jpg",
+        "content": "Security is paramount in the cryptocurrency world...",
+        "category": "Security",
+        "tags": [
+            "security",
+            "wallets",
+            "protection"
+        ]
+    },
+    {
+        "slug": "institutional-crypto-adoption",
+        "title": "Institutional Crypto Adoption: What's Next?",
+        "excerpt": "How major financial institutions are embracing cryptocurrency and what it means for the future of finance.",
+        "date": "2025-11-15",
+        "author": "Rachel Green",
+        "cover": "/assets/placeholder-hero.jpg",
+        "content": "The tide is turning as institutional investors flood into cryptocurrency...",
+        "category": "Industry",
+        "tags": [
+            "institutional",
+            "investment",
+            "finance"
+        ]
+    }
+]

@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  * {
+    border-color: rgb(229 231 235);
+  }
+
+  /* Dark mode styles */
+  .dark {
+    color-scheme: dark;
+  }
+
+  .dark * {
+    border-color: rgb(55 65 81);
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(to right, #6e3ec0, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .crypto-button {
+    background: linear-gradient(to right, #6e3ec0, #4c1d95);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .crypto-button:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
+
+  .crypto-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .crypto-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .ticker-container {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee {
+    display: inline-flex;
+    animation: marquee 20s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

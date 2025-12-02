@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Ancient Roman Denarius",
+    "price": "$2,450",
+    "weight": "3.8g",
+    "year": "150 AD",
+    "description": "Rare silver denarius from Emperor Marcus Aurelius reign. This exceptional coin features the portrait of the emperor on the obverse and various military symbols on the reverse. The coin has been professionally graded and authenticated by leading numismatic experts.",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "Extremely rare - Only 200 known specimens in existence"
+  },
+  {
+    "id": 2,
+    "title": "Greek Silver Tetradrachm",
+    "price": "$3,200",
+    "weight": "17.2g",
+    "year": "350 BC",
+    "description": "Classical Athenian silver coin with owl design. This beautiful tetradrachm features the iconic owl of Athena on the reverse and the goddess herself on the obverse. A true masterpiece of ancient Greek coinage.",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "Historically significant - Classical Athens period"
+  },
+  {
+    "id": 3,
+    "title": "Medieval Gold Florin",
+    "price": "$5,800",
+    "weight": "3.5g",
+    "year": "1252 AD",
+    "description": "Florentine gold coin from Renaissance period. This beautiful gold florin features the fleur-de-lis symbol and was widely used throughout medieval Europe as a reliable currency.",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "First European gold coin since Roman times"
+  },
+  {
+    "title": "taj",
+    "price": "321",
+    "weight": "3.4g",
+    "year": "2012",
+    "description": "jeee",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "ppppppppp",
+    "id": 4
+  },
+  {
+    "title": "wq",
+    "price": "weq",
+    "weight": "12",
+    "year": "2322",
+    "description": "213EAFDS",
+    "frontImage": "blob:http://localhost:3000/8e85c71d-b880-404d-9f74-f19849b8f2da",
+    "backImage": "blob:http://localhost:3000/7efee8c6-cac1-4dd3-afab-2845b2071d8c",
+    "weightImage": "blob:http://localhost:3000/9c9f829d-b2ae-4b2e-9995-2925ebbd86b9",
+    "historicalValue": "3211EQWDA",
+    "id": 5
+  }
+]
