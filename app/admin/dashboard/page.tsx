@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Plus, Edit2, Trash2, Save, X, LogOut, Coins, Eye, Check, XCircle, RotateCcw } from 'lucide-react'
 import { useGlobal } from '@/contexts/GlobalContext'
+import { useToast } from '@/contexts/ToastContext'
 
 interface Coin {
   id: number
@@ -47,6 +48,7 @@ interface UserSubmission {
 
 export default function AdminDashboardPage() {
   const { theme } = useGlobal()
+  const { showSuccess, showError, showWarning, showInfo } = useToast()
   const [coins, setCoins] = useState<Coin[]>([])
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingCoin, setEditingCoin] = useState<Coin | null>(null)
@@ -207,19 +209,37 @@ export default function AdminDashboardPage() {
       if (response.ok) {
         await loadCoins()
         resetForm()
+        showSuccess(
+          editingCoin 
+            ? 'Coin updated successfully!' 
+            : 'Coin added successfully!',
+          4000
+        )
+      } else {
+        const errorData = await response.json()
+        showError(`Failed to save coin: ${errorData.error || 'Unknown error'}`)
       }
     } catch (error) {
       console.error('Error saving coin:', error)
+      showError('Network error: Failed to save coin')
     }
   }
 
   const deleteCoin = async (id: number) => {
     if (confirm('Are you sure you want to delete this coin?')) {
       try {
-        await fetch(`/api/coins/${id}`, { method: 'DELETE' })
-        await loadCoins()
+        const response = await fetch(`/api/coins/${id}`, { method: 'DELETE' })
+        
+        if (response.ok) {
+          await loadCoins()
+          showSuccess('Coin deleted successfully!', 4000)
+        } else {
+          const errorData = await response.json()
+          showError(`Failed to delete coin: ${errorData.error || 'Unknown error'}`)
+        }
       } catch (error) {
         console.error('Error deleting coin:', error)
+        showError('Network error: Failed to delete coin')
       }
     }
   }
@@ -235,7 +255,8 @@ export default function AdminDashboardPage() {
     // Save to localStorage
     localStorage.setItem('userSubmissions', JSON.stringify(updatedSubmissions))
     
-    alert('Submission approved! User will be notified.')
+    const submission = userSubmissions.find(s => s.id === id)
+    showSuccess(`Submission from ${submission?.name} approved successfully!`, 4000)
   }
 
   const rejectSubmission = (id: number) => {
@@ -250,7 +271,8 @@ export default function AdminDashboardPage() {
       // Save to localStorage
       localStorage.setItem('userSubmissions', JSON.stringify(updatedSubmissions))
       
-      alert('Submission rejected. User will be notified.')
+      const submission = userSubmissions.find(s => s.id === id)
+      showWarning(`Submission from ${submission?.name} rejected.`, 4000)
     }
   }
 
