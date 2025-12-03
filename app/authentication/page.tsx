@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, CheckCircle, Star, Award, Clock, Users, FileText, Camera, Search } from 'lucide-react'
+import { Shield, CheckCircle, Star, Award, Clock, Users, FileText, Camera, Search, AlertTriangle } from 'lucide-react'
 import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function AuthenticationPage() {
