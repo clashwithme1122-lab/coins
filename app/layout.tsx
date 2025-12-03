@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     shortcut: '/assets/home.webp',
     apple: '/assets/home.webp',
   },
+  verification: {
+    google: '_kqY42InvzbfXtf6Vn4vOBTCJ01rQ4dhJFw1g3mBMq0',
+  },
   openGraph: {
     title: 'Taksila Coins – Antique & Valuable Coin Marketplace',
     description: 'Buy & Sell Antique, Historical & Valuable Coins from around the world',
