@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { promises as fs } from 'fs'
-import path from 'path'
+import coinsData from '@/data/coins.json'
 
 interface Coin {
     id: number
@@ -15,19 +14,8 @@ interface Coin {
     historicalValue?: string
 }
 
-const COINS_FILE = path.join(process.cwd(), 'data', 'coins.json')
-
 async function getCoins(): Promise<Coin[]> {
-    try {
-        const data = await fs.readFile(COINS_FILE, 'utf-8')
-        return JSON.parse(data)
-    } catch (error) {
-        return []
-    }
-}
-
-async function saveCoins(coins: Coin[]): Promise<void> {
-    await fs.writeFile(COINS_FILE, JSON.stringify(coins, null, 2))
+    return coinsData as Coin[]
 }
 
 export async function GET() {
@@ -36,24 +24,5 @@ export async function GET() {
         return NextResponse.json(coins)
     } catch (error) {
         return NextResponse.json({ error: 'Failed to fetch coins' }, { status: 500 })
-    }
-}
-
-export async function POST(request: NextRequest) {
-    try {
-        const coinData: Omit<Coin, 'id'> = await request.json()
-        const coins = await getCoins()
-
-        const newCoin: Coin = {
-            ...coinData,
-            id: coins.length > 0 ? Math.max(...coins.map(c => c.id)) + 1 : 1
-        }
-
-        coins.push(newCoin)
-        await saveCoins(coins)
-
-        return NextResponse.json(newCoin, { status: 201 })
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to create coin' }, { status: 500 })
     }
 }

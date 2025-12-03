@@ -23,6 +23,13 @@ async function getCoin(id: string): Promise<Coin | null> {
   return coins.find(coin => coin.id === parseInt(id)) || null
 }
 
+export async function generateStaticParams() {
+  const coins: Coin[] = coinsData as Coin[]
+  return coins.map(coin => ({
+    id: coin.id.toString()
+  }))
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params
   const coin = await getCoin(id)
