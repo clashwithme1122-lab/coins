@@ -1,10 +1,9 @@
 import { Metadata } from 'next'
-import { promises as fs } from 'fs'
-import path from 'path'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import CoinDetailsClient from '@/components/CoinDetailsClient'
+import coinsData from '@/data/coins.json'
 
 interface Coin {
   id: number
@@ -20,29 +19,8 @@ interface Coin {
 }
 
 async function getCoin(id: string): Promise<Coin | null> {
-  try {
-    const coinsPath = path.join(process.cwd(), 'data', 'coins.json')
-    const coinsData = await fs.readFile(coinsPath, 'utf-8')
-    const coins: Coin[] = JSON.parse(coinsData)
-    return coins.find(coin => coin.id === parseInt(id)) || null
-  } catch (error) {
-    // Return dummy data if file doesn't exist
-    const dummyCoins: Coin[] = [
-      {
-        id: 1,
-        title: "Ancient Roman Denarius",
-        price: "$2,450",
-        weight: "3.8g",
-        year: "150 AD",
-        description: "Rare silver denarius from Emperor Marcus Aurelius reign. This exceptional coin features the portrait of the emperor on the obverse and various military symbols on the reverse. The coin has been professionally graded and authenticated by leading numismatic experts.",
-        frontImage: "/assets/dummycoin.jpg",
-        backImage: "/assets/dummycoin.jpg",
-        weightImage: "/assets/dummycoinweight.jpg",
-        historicalValue: "Extremely rare - Only 200 known specimens in existence"
-      }
-    ]
-    return dummyCoins.find(coin => coin.id === parseInt(id)) || null
-  }
+  const coins: Coin[] = coinsData as Coin[]
+  return coins.find(coin => coin.id === parseInt(id)) || null
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {

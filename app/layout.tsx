@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   description: 'Buy & Sell Antique, Historical & Valuable Coins. Discover rare numismatic treasures from around the world.',
   keywords: ['antique coins', 'historical coins', 'numismatics', 'coin collecting', 'rare coins', 'valuable coins'],
   authors: [{ name: 'Taksila Coins Team' }],
+  icons: {
+    icon: '/assets/home.webp',
+    shortcut: '/assets/home.webp',
+    apple: '/assets/home.webp',
+  },
   openGraph: {
     title: 'Taksila Coins – Antique & Valuable Coin Marketplace',
     description: 'Buy & Sell Antique, Historical & Valuable Coins from around the world',
