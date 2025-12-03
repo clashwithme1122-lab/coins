@@ -3,15 +3,17 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { TrendingUp, Shield, Target, PiggyBank, AlertTriangle, CheckCircle, DollarSign, BarChart3, Award } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function InvestingPage() {
+  const { formatPrice, theme } = useGlobal()
   const [selectedStrategy, setSelectedStrategy] = useState('beginner')
 
   const strategies = [
     {
       id: 'beginner',
       title: 'Beginner Portfolio',
-      minInvestment: '$500',
+      minInvestment: formatPrice(500),
       riskLevel: 'Low',
       expectedReturn: '8-12%',
       timeframe: '2-5 years',
@@ -27,7 +29,7 @@ export default function InvestingPage() {
     {
       id: 'intermediate',
       title: 'Growth Portfolio',
-      minInvestment: '$5,000',
+      minInvestment: formatPrice(5000),
       riskLevel: 'Medium',
       expectedReturn: '12-18%',
       timeframe: '3-7 years',
@@ -43,7 +45,7 @@ export default function InvestingPage() {
     {
       id: 'advanced',
       title: 'High-Value Portfolio',
-      minInvestment: '$25,000',
+      minInvestment: formatPrice(25000),
       riskLevel: 'High',
       expectedReturn: '18-25%',
       timeframe: '5-10 years',
@@ -116,7 +118,7 @@ export default function InvestingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -128,50 +130,60 @@ export default function InvestingPage() {
             <BarChart3 className="w-16 h-16 mx-auto mb-4" />
             <h1 className="text-4xl font-bold mb-4">Coin Investment Guide</h1>
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-              Build wealth through strategic coin collecting. Learn investment strategies, risk management, and portfolio optimization.
+              Expert guidance on building a valuable coin collection portfolio. From beginner strategies to advanced investment techniques.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Investment amounts shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
 
       {/* Investment Calculator */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Investment Calculator</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 rounded-xl p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Initial Investment</label>
+            <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-xl p-6`}>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Initial Investment</label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <DollarSign className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'} w-5 h-5`} />
                 <input
                   type="text"
-                  defaultValue="10,000"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                  value={formatPrice(10000)}
+                  readOnly
+                  className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                    theme === 'dark' ? 'border-gray-600 bg-gray-600 text-white' : 'border-gray-300'
+                  }`}
                 />
               </div>
             </div>
-            <div className="bg-gray-50 rounded-xl p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Investment Period</label>
-              <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600">
+            <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-xl p-6`}>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Investment Period</label>
+              <select className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                theme === 'dark' ? 'border-gray-600 bg-gray-600 text-white' : 'border-gray-300'
+              }`}>
                 <option>5 years</option>
                 <option>10 years</option>
                 <option>15 years</option>
                 <option>20 years</option>
               </select>
             </div>
-            <div className="bg-gray-50 rounded-xl p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Expected Return</label>
-              <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600">
+            <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-xl p-6`}>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Expected Return</label>
+              <select className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                theme === 'dark' ? 'border-gray-600 bg-gray-600 text-white' : 'border-gray-300'
+              }`}>
                 <option>Conservative (8%)</option>
                 <option>Moderate (12%)</option>
                 <option>Aggressive (18%)</option>
               </select>
             </div>
           </div>
-          <div className="mt-6 bg-purple-50 rounded-xl p-6 text-center">
-            <p className="text-sm text-gray-600 mb-2">Estimated Future Value</p>
-            <p className="text-4xl font-bold text-purple-600">$23,467</p>
-            <p className="text-sm text-gray-500 mt-1">Based on 12% annual return over 10 years</p>
+          <div className={`mt-6 ${theme === 'dark' ? 'bg-purple-900' : 'bg-purple-50'} rounded-xl p-6 text-center`}>
+            <p className={`text-sm mb-2 ${theme === 'dark' ? 'text-purple-200' : 'text-gray-600'}`}>Estimated Future Value</p>
+            <p className="text-4xl font-bold text-purple-600">{formatPrice(23467)}</p>
+            <p className={`text-sm mt-1 ${theme === 'dark' ? 'text-purple-300' : 'text-gray-500'}`}>Based on 12% annual return over 10 years</p>
           </div>
         </div>
       </div>
@@ -186,7 +198,7 @@ export default function InvestingPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-white rounded-xl shadow-lg p-6 cursor-pointer transition-all ${
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 cursor-pointer transition-all ${
                 selectedStrategy === strategy.id ? 'ring-2 ring-purple-600' : 'hover:shadow-xl'
               }`}
               onClick={() => setSelectedStrategy(strategy.id)}
@@ -194,25 +206,25 @@ export default function InvestingPage() {
               <div className="text-center mb-4">
                 <h3 className="text-xl font-semibold mb-2">{strategy.title}</h3>
                 <div className="text-3xl font-bold text-purple-600 mb-1">{strategy.minInvestment}</div>
-                <p className="text-sm text-gray-500">Minimum investment</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Minimum investment</p>
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Risk Level</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Risk Level</span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(strategy.riskLevel)}`}>
                     {strategy.riskLevel}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Expected Return</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Expected Return</span>
                   <span className="text-sm font-medium text-green-600">{strategy.expectedReturn}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Timeframe</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Timeframe</span>
                   <span className="text-sm font-medium">{strategy.timeframe}</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 mt-4">{strategy.description}</p>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mt-4`}>{strategy.description}</p>
             </motion.div>
           ))}
         </div>
@@ -222,7 +234,7 @@ export default function InvestingPage() {
           key={selectedStrategy}
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-white rounded-xl shadow-lg p-8"
+          className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-8`}
         >
           <h3 className="text-xl font-semibold mb-6">{currentStrategy.title} Details</h3>
           

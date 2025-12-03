@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Award, Star, CheckCircle, Info, Search, Camera, FileText, TrendingUp, Shield } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function GradingPage() {
+  const { formatPrice, theme } = useGlobal()
   const [selectedGrade, setSelectedGrade] = useState('ms65')
   const [selectedService, setSelectedService] = useState('standard')
 
@@ -28,21 +30,21 @@ export default function GradingPage() {
     {
       id: 'standard',
       title: 'Standard Grading',
-      price: '$35',
+      price: formatPrice(35),
       duration: '7-10 business days',
       features: ['Professional visual grading', 'Grade assignment', 'Basic condition report', 'Plastic holder']
     },
     {
       id: 'premium',
       title: 'Premium Grading',
-      price: '$75',
+      price: formatPrice(75),
       duration: '5-7 business days',
       features: ['Expert visual grading', 'Detailed condition analysis', 'Photographic documentation', 'Slab with label', 'Online verification']
     },
     {
       id: 'express',
       title: 'Express Grading',
-      price: '$125',
+      price: formatPrice(125),
       duration: '2-3 business days',
       features: ['Priority service', 'Expert grading', 'Comprehensive analysis', 'Premium slab', 'Express shipping', 'Digital certificate']
     }
@@ -100,7 +102,7 @@ export default function GradingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -114,6 +116,9 @@ export default function GradingPage() {
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
               Expert grading services using industry standards. Get your coins professionally graded and certified for maximum value.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Prices shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
@@ -123,10 +128,10 @@ export default function GradingPage() {
         <h2 className="text-2xl font-bold text-center mb-8">Coin Grading Scale</h2>
         
         {/* Grade Selector */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 mb-8`}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Select a Grade</h3>
+              <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : ''}`}>Select a Grade</h3>
               <div className="space-y-2 max-h-96 overflow-y-auto">
                 {gradingScale.map((grade) => (
                   <button
@@ -135,40 +140,40 @@ export default function GradingPage() {
                     className={`w-full text-left p-3 rounded-lg transition-colors ${
                       selectedGrade === grade.grade
                         ? 'bg-purple-50 border-2 border-purple-600'
-                        : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
+                        : theme === 'dark' ? 'bg-gray-700 border-2 border-transparent hover:bg-gray-600' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
                     }`}
                   >
                     <div className="flex justify-between items-center">
                       <div>
                         <span className="font-semibold">{grade.grade}</span>
-                        <span className="ml-2 text-gray-600">{grade.name}</span>
+                        <span className={`ml-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{grade.name}</span>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getValueColor(grade.value)}`}>
                         {grade.value}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">{grade.description}</p>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mt-1`}>{grade.description}</p>
                   </button>
                 ))}
               </div>
             </div>
             
-            <div className="bg-purple-50 rounded-xl p-6">
-              <h3 className="text-lg font-semibold mb-4">Grade Details: {currentGrade.grade}</h3>
+            <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-purple-50'} rounded-xl p-6`}>
+              <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : ''}`}>Grade Details: {currentGrade.grade}</h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-medium text-gray-900">{currentGrade.name}</h4>
-                  <p className="text-gray-600 mt-1">{currentGrade.description}</p>
+                  <h4 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{currentGrade.name}</h4>
+                  <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mt-1`}>{currentGrade.description}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Market Value Impact</span>
+                  <span className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Market Value Impact</span>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${getValueColor(currentGrade.value)}`}>
                     {currentGrade.value}
                   </span>
                 </div>
-                <div className="bg-white rounded-lg p-4">
+                <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg p-4`}>
                   <h4 className="font-medium mb-2">Typical Examples</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
+                  <ul className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} space-y-1`}>
                     <li>• No visible imperfections</li>
                     <li>• Full mint luster (for uncirculated)</li>
                     <li>• No signs of circulation</li>
@@ -182,7 +187,7 @@ export default function GradingPage() {
       </div>
 
       {/* Grading Services */}
-      <div className="bg-white border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Grading Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -192,7 +197,7 @@ export default function GradingPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`bg-gray-50 rounded-xl p-6 cursor-pointer transition-all ${
+                className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-xl p-6 cursor-pointer transition-all ${
                   selectedService === service.id ? 'ring-2 ring-purple-600' : 'hover:shadow-lg'
                 }`}
                 onClick={() => setSelectedService(service.id)}
@@ -200,13 +205,13 @@ export default function GradingPage() {
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                   <div className="text-3xl font-bold text-purple-600 mb-1">{service.price}</div>
-                  <p className="text-sm text-gray-500">{service.duration}</p>
+                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>{service.duration}</p>
                 </div>
                 <ul className="space-y-3">
                   {service.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-gray-600">{feature}</span>
+                      <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -220,7 +225,7 @@ export default function GradingPage() {
       </div>
 
       {/* Grading Factors */}
-      <div className="bg-gray-50 border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Key Grading Factors</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -230,13 +235,13 @@ export default function GradingPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg p-6"
+                className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-white'} rounded-xl shadow-lg p-6`}
               >
                 <div className="flex items-center mb-4">
                   <Star className="w-5 h-5 text-purple-600 mr-2" />
                   <h3 className="font-semibold">{factor.title}</h3>
                 </div>
-                <p className="text-gray-600 mb-4">{factor.description}</p>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-4`}>{factor.description}</p>
                 <div className="mb-4">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     factor.weight === 'High' ? 'bg-red-100 text-red-700' :
@@ -248,7 +253,7 @@ export default function GradingPage() {
                 </div>
                 <div>
                   <h4 className="text-sm font-medium mb-2">What We Look For:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
+                  <ul className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} space-y-1`}>
                     {factor.examples.map((example, exampleIndex) => (
                       <li key={exampleIndex}>• {example}</li>
                     ))}
@@ -261,7 +266,7 @@ export default function GradingPage() {
       </div>
 
       {/* Grading Process */}
-      <div className="bg-white border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Our Grading Process</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -270,38 +275,38 @@ export default function GradingPage() {
                 <Search className="w-8 h-8" />
               </div>
               <h3 className="font-semibold mb-2">Initial Inspection</h3>
-              <p className="text-sm text-gray-600">Visual examination for authenticity and basic condition</p>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Visual examination for authenticity and basic condition</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Camera className="w-8 h-8" />
               </div>
               <h3 className="font-semibold mb-2">Detailed Analysis</h3>
-              <p className="text-sm text-gray-600">Magnified inspection of surfaces, edges, and details</p>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Magnified inspection of surfaces, edges, and details</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Award className="w-8 h-8" />
               </div>
               <h3 className="font-semibold mb-2">Grade Assignment</h3>
-              <p className="text-sm text-gray-600">Expert consensus on final grade based on all factors</p>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Expert consensus on final grade based on all factors</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-8 h-8" />
               </div>
               <h3 className="font-semibold mb-2">Certification</h3>
-              <p className="text-sm text-gray-600">Professional slabbing and certificate issuance</p>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Professional slabbing and certificate issuance</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Value Impact */}
-      <div className="bg-purple-50 border-t border-purple-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-purple-50 border-purple-200'} border-t`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">How Grading Affects Value</h2>
-          <div className="bg-white rounded-xl p-8">
+          <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl p-8`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <h3 className="font-semibold mb-4">Value Multipliers by Grade</h3>

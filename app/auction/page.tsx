@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Gavel, Clock, TrendingUp, Users, Filter, Search, Heart } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 interface AuctionItem {
   id: number
@@ -18,6 +19,7 @@ interface AuctionItem {
 }
 
 export default function AuctionPage() {
+  const { formatPrice, theme } = useGlobal()
   const [auctions, setAuctions] = useState<AuctionItem[]>([
     {
       id: 1,
@@ -108,7 +110,7 @@ export default function AuctionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -122,12 +124,15 @@ export default function AuctionPage() {
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
               Bid on rare and valuable coins from around the world. Live auctions ending daily.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Prices shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
 
       {/* Stats Bar */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="flex items-center">
@@ -135,7 +140,7 @@ export default function AuctionPage() {
                 <Gavel className="w-6 h-6 text-purple-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Active Auctions</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Active Auctions</p>
                 <p className="text-2xl font-bold">{auctions.length}</p>
               </div>
             </div>
@@ -144,7 +149,7 @@ export default function AuctionPage() {
                 <TrendingUp className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Bids Today</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Total Bids Today</p>
                 <p className="text-2xl font-bold">247</p>
               </div>
             </div>
@@ -153,7 +158,7 @@ export default function AuctionPage() {
                 <Users className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Active Bidders</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Active Bidders</p>
                 <p className="text-2xl font-bold">89</p>
               </div>
             </div>
@@ -162,7 +167,7 @@ export default function AuctionPage() {
                 <Clock className="w-6 h-6 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Ending Soon</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Ending Soon</p>
                 <p className="text-2xl font-bold">12</p>
               </div>
             </div>
@@ -171,7 +176,7 @@ export default function AuctionPage() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-4 items-center flex-1">
@@ -183,7 +188,9 @@ export default function AuctionPage() {
                   placeholder="Search auctions..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                  className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                    theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
+                  }`}
                 />
               </div>
 
@@ -193,7 +200,9 @@ export default function AuctionPage() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                  className={`px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                    theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
+                  }`}
                 >
                   {categories.map(category => (
                     <option key={category} value={category}>
@@ -207,7 +216,9 @@ export default function AuctionPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                className={`px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                  theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
+                }`}
               >
                 {sortOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -229,7 +240,7 @@ export default function AuctionPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
             >
               {/* Image */}
               <div className="relative">
@@ -265,22 +276,22 @@ export default function AuctionPage() {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-lg font-semibold mb-2">{auction.title}</h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{auction.description}</p>
+                <h3 className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : ''}`}>{auction.title}</h3>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} text-sm mb-4 line-clamp-2`}>{auction.description}</p>
 
                 {/* Bidding Info */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">Current Bid</span>
-                    <span className="text-2xl font-bold text-purple-600">${auction.currentBid}</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} text-sm`}>Current Bid</span>
+                    <span className="text-2xl font-bold text-purple-600">{formatPrice(auction.currentBid)}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Starting Bid</span>
-                    <span className="text-gray-700">${auction.startingBid}</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Starting Bid</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{formatPrice(auction.startingBid)}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Bids</span>
-                    <span className="text-gray-700">{auction.bids} bids</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Bids</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{auction.bids} bids</span>
                   </div>
                 </div>
 
@@ -301,15 +312,15 @@ export default function AuctionPage() {
         {/* Empty State */}
         {filteredAuctions.length === 0 && (
           <div className="text-center py-12">
-            <Gavel className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No auctions found</h3>
-            <p className="text-gray-500">Try adjusting your search or filters</p>
+            <Gavel className={`w-16 h-16 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'} mx-auto mb-4`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>No auctions found</h3>
+            <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Try adjusting your search or filters</p>
           </div>
         )}
       </div>
 
       {/* How It Works */}
-      <div className="bg-white border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">How Coin Auctions Work</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -317,29 +328,29 @@ export default function AuctionPage() {
               <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="font-bold">1</span>
               </div>
-              <h3 className="font-semibold mb-2">Browse Auctions</h3>
-              <p className="text-sm text-gray-600">Find coins you're interested in from our curated selection</p>
+              <h3 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : ''}`}>Browse Auctions</h3>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Find coins you're interested in from our curated selection</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="font-bold">2</span>
               </div>
-              <h3 className="font-semibold mb-2">Place Your Bid</h3>
-              <p className="text-sm text-gray-600">Submit your maximum bid or bid incrementally</p>
+              <h3 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : ''}`}>Place Your Bid</h3>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Submit your maximum bid or bid incrementally</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="font-bold">3</span>
               </div>
-              <h3 className="font-semibold mb-2">Track Auction</h3>
-              <p className="text-sm text-gray-600">Monitor bidding activity and time remaining</p>
+              <h3 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : ''}`}>Track Auction</h3>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Monitor bidding activity and time remaining</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="font-bold">4</span>
               </div>
-              <h3 className="font-semibold mb-2">Win & Pay</h3>
-              <p className="text-sm text-gray-600">If you win, complete payment and receive your coin</p>
+              <h3 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : ''}`}>Win & Pay</h3>
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>If you win, complete payment and receive your coin</p>
             </div>
           </div>
         </div>

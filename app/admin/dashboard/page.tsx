@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Plus, Edit2, Trash2, Save, X, LogOut, Coins, Eye, Check, XCircle, RotateCcw } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 interface Coin {
   id: number
@@ -45,6 +46,7 @@ interface UserSubmission {
 }
 
 export default function AdminDashboardPage() {
+  const { theme } = useGlobal()
   const [coins, setCoins] = useState<Coin[]>([])
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingCoin, setEditingCoin] = useState<Coin | null>(null)
@@ -58,12 +60,13 @@ export default function AdminDashboardPage() {
     weight: '',
     year: '',
     description: '',
-    frontImage: '/assets/dummycoin.jpg',
-    backImage: '/assets/dummycoin.jpg',
-    weightImage: '/assets/dummycoinweight..jpg',
+    frontImage: '',
+    backImage: '',
+    weightImage: '',
     historicalValue: ''
   })
   const [errors, setErrors] = useState<FormErrors>({})
+  const [uploading, setUploading] = useState<{ [key: string]: boolean }>({})
   const router = useRouter()
 
   // Check admin authentication
@@ -164,27 +167,21 @@ export default function AdminDashboardPage() {
     
     if (!formData.weight?.trim()) {
       newErrors.weight = 'Weight is required'
-    } else if (!/^\d+(\.\d+)?g?$/i.test(formData.weight)) {
-      newErrors.weight = 'Invalid weight format (e.g., 3.8g or 3.8)'
     }
     
     if (!formData.year?.trim()) {
       newErrors.year = 'Year is required'
-    } else if (!/^\d+\s*(AD|BC|CE|BCE)?$/i.test(formData.year)) {
-      newErrors.year = 'Invalid year format (e.g., 150 AD or 2023)'
     }
     
     if (!formData.description?.trim()) {
       newErrors.description = 'Description is required'
-    } else if (formData.description.length < 10) {
-      newErrors.description = 'Description must be at least 10 characters'
     }
     
-    if (!formData.frontImage || formData.frontImage === '/assets/dummycoin.jpg') {
+    if (!formData.frontImage?.trim()) {
       newErrors.frontImage = 'Front image is required'
     }
     
-    if (!formData.backImage || formData.backImage === '/assets/dummycoin.jpg') {
+    if (!formData.backImage?.trim()) {
       newErrors.backImage = 'Back image is required'
     }
     
@@ -284,9 +281,9 @@ export default function AdminDashboardPage() {
       weight: '',
       year: '',
       description: '',
-      frontImage: '/assets/dummycoin.jpg',
-      backImage: '/assets/dummycoin.jpg',
-      weightImage: '/assets/dummycoinweight..jpg',
+      frontImage: '',
+      backImage: '',
+      weightImage: '',
       historicalValue: ''
     })
     setErrors({})
@@ -305,8 +302,37 @@ export default function AdminDashboardPage() {
     setShowAddForm(true)
   }
 
+  // Handle image upload
+  const handleImageUpload = async (file: File, imageType: 'frontImage' | 'backImage' | 'weightImage') => {
+    setUploading(prev => ({ ...prev, [imageType]: true }))
+    
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'coins')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+
+      const result = await response.json()
+      
+      if (result.success) {
+        setFormData(prev => ({ ...prev, [imageType]: result.url }))
+        setErrors(prev => ({ ...prev, [imageType]: '' }))
+      } else {
+        setErrors(prev => ({ ...prev, [imageType]: 'Upload failed' }))
+      }
+    } catch (error) {
+      setErrors(prev => ({ ...prev, [imageType]: 'Upload error' }))
+    } finally {
+      setUploading(prev => ({ ...prev, [imageType]: false }))
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -488,17 +514,19 @@ export default function AdminDashboardPage() {
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (!file) return
-                    const url = URL.createObjectURL(file)
-                    setFormData({ ...formData, frontImage: url })
+                    handleImageUpload(file, 'frontImage')
                   }}
                   className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
                     errors.frontImage ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
+                {uploading.frontImage && (
+                  <p className="mt-1 text-sm text-blue-600">Uploading...</p>
+                )}
                 {errors.frontImage && (
                   <p className="mt-1 text-sm text-red-600">{errors.frontImage}</p>
                 )}
-                {formData.frontImage && formData.frontImage !== '/assets/dummycoin.jpg' && (
+                {formData.frontImage && (
                   <img src={formData.frontImage} alt="Front preview" className="mt-2 h-20 w-20 object-cover rounded-lg" />
                 )}
               </div>
@@ -511,17 +539,19 @@ export default function AdminDashboardPage() {
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (!file) return
-                    const url = URL.createObjectURL(file)
-                    setFormData({ ...formData, backImage: url })
+                    handleImageUpload(file, 'backImage')
                   }}
                   className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
                     errors.backImage ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
+                {uploading.backImage && (
+                  <p className="mt-1 text-sm text-blue-600">Uploading...</p>
+                )}
                 {errors.backImage && (
                   <p className="mt-1 text-sm text-red-600">{errors.backImage}</p>
                 )}
-                {formData.backImage && formData.backImage !== '/assets/dummycoin.jpg' && (
+                {formData.backImage && (
                   <img src={formData.backImage} alt="Back preview" className="mt-2 h-20 w-20 object-cover rounded-lg" />
                 )}
               </div>
@@ -534,17 +564,19 @@ export default function AdminDashboardPage() {
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (!file) return
-                    const url = URL.createObjectURL(file)
-                    setFormData({ ...formData, weightImage: url })
+                    handleImageUpload(file, 'weightImage')
                   }}
                   className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
                     errors.weightImage ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
+                {uploading.weightImage && (
+                  <p className="mt-1 text-sm text-blue-600">Uploading...</p>
+                )}
                 {errors.weightImage && (
                   <p className="mt-1 text-sm text-red-600">{errors.weightImage}</p>
                 )}
-                {formData.weightImage && formData.weightImage !== '/assets/dummycoinweight..jpg' && (
+                {formData.weightImage && (
                   <img src={formData.weightImage} alt="Weight preview" className="mt-2 h-20 w-20 object-cover rounded-lg" />
                 )}
               </div>

@@ -1,11 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Star, Shield, Clock, RotateCcw } from 'lucide-react'
+import { ArrowRight, Star, Shield, Clock, RotateCcw, Search } from 'lucide-react'
+import { useState } from 'react'
 import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function HomePage() {
-  const { formatPrice } = useGlobal()
+  const { formatPrice, theme } = useGlobal()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<typeof dummyCoins>([])
 
   // Dummy coins data
   const dummyCoins = [
@@ -37,6 +40,20 @@ export default function HomePage() {
       frontImage: "/assets/dummycoin.jpg"
     }
   ]
+
+  // Search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+    if (query.trim() === '') {
+      setSearchResults([])
+    } else {
+      const results = dummyCoins.filter(coin => 
+        coin.title.toLowerCase().includes(query.toLowerCase()) ||
+        coin.description.toLowerCase().includes(query.toLowerCase())
+      )
+      setSearchResults(results)
+    }
+  }
   return (
     <div className="min-h-screen dark:bg-gray-900 transition-colors duration-200">
       {/* Hero Section */}
@@ -55,14 +72,82 @@ export default function HomePage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
             Taksila Coins
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-purple-100 px-4">
-            Buy & Sell Antique, Historical & Valuable Coins
+          <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Discover rare and historical coins from around the world
           </p>
+          
+          {/* Search Bar */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                placeholder="Search for coins..."
+                className={`w-full pl-10 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-600 ${
+                  theme === 'dark' 
+                    ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                }`}
+              />
+            </div>
+            
+            {/* Search Results */}
+            {searchResults.length > 0 && (
+              <div className={`mt-4 rounded-lg border shadow-lg max-h-80 overflow-y-auto ${
+                theme === 'dark' 
+                  ? 'bg-gray-800 border-gray-700' 
+                  : 'bg-white border-gray-200'
+              }`}>
+                <div className="p-2">
+                  <p className={`text-sm font-medium mb-2 px-2 ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                    Found {searchResults.length} coins
+                  </p>
+                  {searchResults.map((coin) => (
+                    <Link 
+                      key={coin.id}
+                      href={`/coin/${coin.id}`}
+                      className={`block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <img 
+                          src={coin.frontImage} 
+                          alt={coin.title}
+                          className="w-12 h-12 object-cover rounded-lg"
+                        />
+                        <div className="flex-1">
+                          <h4 className={`font-medium ${
+                            theme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
+                            {coin.title}
+                          </h4>
+                          <p className={`text-sm ${
+                            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            {coin.year} • {coin.weight}
+                          </p>
+                        </div>
+                        <div className={`text-lg font-semibold ${
+                          theme === 'dark' ? 'text-purple-400' : 'text-purple-600'
+                        }`}>
+                          {formatPrice(coin.price)}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          
           <Link 
-            href="/coins" 
+            href={`/coins${searchQuery ? `?search=${encodeURIComponent(searchQuery)}` : ''}`}
             className="inline-flex items-center bg-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200 text-sm sm:text-base lg:text-lg"
           >
-            Browse Coins
+            Search Coins
             <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
           </Link>
         </div>

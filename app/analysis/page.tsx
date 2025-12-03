@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, BarChart3, PieChart, Activity, DollarSign, Eye, Calendar, Filter } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function MarketAnalysisPage() {
+  const { formatPrice, theme } = useGlobal()
   const [selectedPeriod, setSelectedPeriod] = useState('1M')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
@@ -14,14 +16,14 @@ export default function MarketAnalysisPage() {
   const marketStats = [
     {
       title: "Market Cap",
-      value: "$2.4M",
+      value: formatPrice(2400000),
       change: "+12.5%",
       trend: "up",
       description: "Total market value"
     },
     {
       title: "24h Volume",
-      value: "$45.2K",
+      value: formatPrice(45200),
       change: "+8.3%",
       trend: "up", 
       description: "Trading volume today"
@@ -35,7 +37,7 @@ export default function MarketAnalysisPage() {
     },
     {
       title: "Avg. Price",
-      value: "$1,847",
+      value: formatPrice(1847),
       change: "+5.7%",
       trend: "up",
       description: "Average coin price"
@@ -43,19 +45,19 @@ export default function MarketAnalysisPage() {
   ]
 
   const topGainers = [
-    { name: "1909-S VDB Lincoln", price: "$3,200", change: "+24.5%", volume: "High" },
-    { name: "Roman Aureus", price: "$8,500", change: "+18.2%", volume: "Medium" },
-    { name: "Morgan Dollar 1893-S", price: "$2,100", change: "+15.8%", volume: "High" },
-    { name: "Greek Tetradrachm", price: "$4,300", change: "+12.3%", volume: "Low" },
-    { name: "British Sovereign", price: "$1,450", change: "+10.1%", volume: "Medium" }
+    { name: "1909-S VDB Lincoln", price: formatPrice(3200), change: "+24.5%", volume: "High" },
+    { name: "Roman Aureus", price: formatPrice(8500), change: "+18.2%", volume: "Medium" },
+    { name: "Morgan Dollar 1893-S", price: formatPrice(2100), change: "+15.8%", volume: "High" },
+    { name: "Greek Tetradrachm", price: formatPrice(4300), change: "+12.3%", volume: "Low" },
+    { name: "British Sovereign", price: formatPrice(1450), change: "+10.1%", volume: "Medium" }
   ]
 
   const topLosers = [
-    { name: "Modern Commemorative", price: "$120", change: "-8.5%", volume: "Low" },
-    { name: "Common Wheat Cent", price: "$45", change: "-6.2%", volume: "High" },
-    { name: "Silver Eagle 2022", price: "$28", change: "-4.3%", volume: "High" },
-    { name: "Buffalo Nickel", price: "$85", change: "-3.8%", volume: "Medium" },
-    { name: "Jefferson Nickel", price: "$12", change: "-2.1%", volume: "Low" }
+    { name: "Modern Commemorative", price: formatPrice(120), change: "-8.5%", volume: "Low" },
+    { name: "Common Wheat Cent", price: formatPrice(45), change: "-6.2%", volume: "High" },
+    { name: "Silver Eagle 2022", price: formatPrice(28), change: "-4.3%", volume: "High" },
+    { name: "Buffalo Nickel", price: formatPrice(85), change: "-3.8%", volume: "Medium" },
+    { name: "Jefferson Nickel", price: formatPrice(12), change: "-2.1%", volume: "Low" }
   ]
 
   const marketTrends = [
@@ -98,7 +100,7 @@ export default function MarketAnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -110,14 +112,17 @@ export default function MarketAnalysisPage() {
             <BarChart3 className="w-16 h-16 mx-auto mb-4" />
             <h1 className="text-4xl font-bold mb-4">Market Analysis</h1>
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-              Real-time coin market data, trends, and investment insights for serious collectors.
+              Real-time market analysis and trends for the coin collecting community. Track prices, volumes, and market movements.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Prices shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
 
       {/* Market Stats */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {marketStats.map((stat, index) => (
@@ -126,7 +131,7 @@ export default function MarketAnalysisPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-gray-50 rounded-xl p-6"
+                className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-xl p-6`}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2 bg-purple-100 rounded-lg">
@@ -149,7 +154,7 @@ export default function MarketAnalysisPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             <div className="flex gap-2 flex-wrap">
@@ -160,7 +165,7 @@ export default function MarketAnalysisPage() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     selectedPeriod === period
                       ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : theme === 'dark' ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   {period}
@@ -168,11 +173,13 @@ export default function MarketAnalysisPage() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-gray-500" />
+              <Filter className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`} />
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                className={`px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                  theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
+                }`}
               >
                 {categories.map(category => (
                   <option key={category} value={category}>
@@ -194,24 +201,26 @@ export default function MarketAnalysisPage() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold flex items-center">
                   <TrendingUp className="w-5 h-5 text-green-500 mr-2" />
                   Top Gainers
                 </h2>
-                <span className="text-sm text-gray-500">Last 24 hours</span>
+                <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Last 24 hours</span>
               </div>
               <div className="space-y-4">
                 {topGainers.map((coin, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div key={index} className={`flex items-center justify-between p-3 ${
+                      theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
+                    } rounded-lg transition-colors`}>
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{coin.name}</h3>
-                      <p className="text-sm text-gray-500">Volume: {coin.volume}</p>
+                      <h3 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{coin.name}</h3>
+                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Volume: {coin.volume}</p>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold text-gray-900">{coin.price}</div>
+                      <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{coin.price}</div>
                       <div className="text-sm text-green-500 font-medium">{coin.change}</div>
                     </div>
                   </div>
@@ -224,24 +233,26 @@ export default function MarketAnalysisPage() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold flex items-center">
                   <TrendingDown className="w-5 h-5 text-red-500 mr-2" />
                   Top Losers
                 </h2>
-                <span className="text-sm text-gray-500">Last 24 hours</span>
+                <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Last 24 hours</span>
               </div>
               <div className="space-y-4">
                 {topLosers.map((coin, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div key={index} className={`flex items-center justify-between p-3 ${
+                      theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
+                    } rounded-lg transition-colors`}>
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{coin.name}</h3>
-                      <p className="text-sm text-gray-500">Volume: {coin.volume}</p>
+                      <h3 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{coin.name}</h3>
+                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Volume: {coin.volume}</p>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold text-gray-900">{coin.price}</div>
+                      <div className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{coin.price}</div>
                       <div className="text-sm text-red-500 font-medium">{coin.change}</div>
                     </div>
                   </div>
@@ -256,7 +267,7 @@ export default function MarketAnalysisPage() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}
             >
               <h2 className="text-xl font-semibold mb-6 flex items-center">
                 <PieChart className="w-5 h-5 text-purple-600 mr-2" />
@@ -264,18 +275,20 @@ export default function MarketAnalysisPage() {
               </h2>
               <div className="space-y-4">
                 {marketTrends.map((trend, index) => (
-                  <div key={index} className="border-b border-gray-200 pb-4 last:border-0">
+                  <div key={index} className={`border-b pb-4 last:border-0 ${
+                    theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                  }`}>
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium text-gray-900">{trend.category}</h3>
+                      <h3 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{trend.category}</h3>
                       <span className={`text-sm font-semibold ${
                         trend.performance.startsWith('+') ? 'text-green-500' : 'text-red-500'
                       }`}>
                         {trend.performance}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{trend.description}</p>
+                    <p className={`text-sm mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{trend.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Outlook</span>
+                      <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Outlook</span>
                       <span className={`text-xs px-2 py-1 rounded-full ${
                         trend.outlook === 'Bullish' ? 'bg-green-100 text-green-700' :
                         trend.outlook === 'Bearish' ? 'bg-red-100 text-red-700' :
@@ -294,7 +307,7 @@ export default function MarketAnalysisPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}
             >
               <h2 className="text-xl font-semibold mb-6 flex items-center">
                 <Activity className="w-5 h-5 text-purple-600 mr-2" />
@@ -302,19 +315,19 @@ export default function MarketAnalysisPage() {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Active Traders</span>
+                  <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Active Traders</span>
                   <span className="font-semibold">847</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Total Trades Today</span>
+                  <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Total Trades Today</span>
                   <span className="font-semibold">1,293</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Market Sentiment</span>
+                  <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Market Sentiment</span>
                   <span className="text-green-500 font-semibold">Bullish</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Volatility Index</span>
+                  <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Volatility Index</span>
                   <span className="font-semibold">Medium</span>
                 </div>
               </div>

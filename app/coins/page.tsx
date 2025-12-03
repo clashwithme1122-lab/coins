@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Star, ArrowRight } from 'lucide-react'
+import { Star, ArrowRight, Filter, Search } from 'lucide-react'
 import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function CoinsPage() {
-  const { formatPrice } = useGlobal()
+  const { formatPrice, theme, currency } = useGlobal()
   const [coins, setCoins] = useState<{
     id: number;
     title: string;
@@ -16,6 +16,10 @@ export default function CoinsPage() {
     description: string;
     frontImage: string;
   }[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [priceRange, setPriceRange] = useState('')
+  const [yearRange, setYearRange] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
 
   useEffect(() => {
     // Load coins data
@@ -34,7 +38,7 @@ export default function CoinsPage() {
               price: 2450,
               weight: "3.8g",
               year: "150 AD",
-              description: "Rare silver denarius from Emperor Marcus Aurelius reign. This exceptional coin features the portrait of the emperor on the obverse and various military symbols on the reverse.",
+              description: "Rare silver denarius from Emperor Marcus Aurelius reign",
               frontImage: "/assets/dummycoin.jpg"
             },
             {
@@ -43,18 +47,51 @@ export default function CoinsPage() {
               price: 3200,
               weight: "17.2g",
               year: "350 BC",
-              description: "Classical Athenian silver coin with owl design. Minted during the golden age of Athens, this coin represents the pinnacle of Greek numismatic art.",
+              description: "Classical Athenian silver coin with owl design",
+              frontImage: "/assets/dummycoin.jpg"
+            },
+            {
+              id: 3,
+              title: "Medieval Gold Florin",
+              price: 5800,
+              weight: "3.5g",
+              year: "1252 AD",
+              description: "Florentine gold coin from Renaissance period",
               frontImage: "/assets/dummycoin.jpg"
             }
           ])
         }
       } catch (error) {
-        console.error('Failed to load coins:', error)
+        console.error('Error loading coins:', error)
       }
     }
 
     loadCoins()
   }, [])
+
+  // Filter coins based on search and filters
+  const filteredCoins = coins.filter(coin => {
+    const matchesSearch = coin.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         coin.description.toLowerCase().includes(searchQuery.toLowerCase())
+    
+    let matchesPrice = true
+    // Since coin.price is a number, no need for string parsing
+    const numericPrice = coin.price
+    
+    // Convert to USD for consistent filtering (if currency is PKR, convert back)
+    const usdPrice = currency === 'PKR' ? numericPrice / 280 : numericPrice
+    
+    if (priceRange === '0-1000') matchesPrice = usdPrice <= 1000
+    else if (priceRange === '1000-5000') matchesPrice = usdPrice > 1000 && usdPrice <= 5000
+    else if (priceRange === '5000+') matchesPrice = usdPrice > 5000
+    
+    let matchesYear = true
+    if (yearRange === 'ancient') matchesYear = coin.year.includes('BC') || parseInt(coin.year) < 500
+    else if (yearRange === 'medieval') matchesYear = parseInt(coin.year) >= 500 && parseInt(coin.year) < 1500
+    else if (yearRange === 'modern') matchesYear = parseInt(coin.year) >= 1500
+    
+    return matchesSearch && matchesPrice && matchesYear
+  })
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
@@ -80,21 +117,164 @@ export default function CoinsPage() {
 
       {/* Coins Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {coins.length === 0 ? (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">No coins available</h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">Check back soon for new additions to our collection</p>
-            <Link 
-              href="/admin/login" 
-              className="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+        {/* Search and Filter Section */}
+        <div className="mb-8">
+          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            {/* Search Bar */}
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search coins by title or description..."
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-600 ${
+                    theme === 'dark' 
+                      ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  }`}
+                />
+              </div>
+            </div>
+            
+            {/* Filter Toggle Button */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`px-6 py-3 rounded-lg font-semibold transition-colors flex items-center ${
+                theme === 'dark'
+                  ? 'bg-gray-800 text-white hover:bg-gray-700 border border-gray-700'
+                  : 'bg-white text-gray-900 hover:bg-gray-50 border border-gray-300'
+              }`}
             >
-              Add Coins as Admin
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Link>
+              <Filter className="w-4 h-4 mr-2" />
+              Filters
+              {(priceRange || yearRange) && (
+                <span className="ml-2 px-2 py-1 bg-purple-600 text-white text-xs rounded-full">
+                  Active
+                </span>
+              )}
+            </button>
+          </div>
+          
+          {/* Filter Options */}
+          {showFilters && (
+            <div className={`p-6 rounded-lg border ${
+              theme === 'dark' 
+                ? 'bg-gray-800 border-gray-700' 
+                : 'bg-white border-gray-200'
+            }`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Price Range Filter */}
+                <div>
+                  <label className={`block text-sm font-medium mb-3 ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    Price Range
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: '', label: 'All Prices' },
+                      { value: '0-1000', label: `Under ${formatPrice(1000)}` },
+                      { value: '1000-5000', label: `${formatPrice(1000)} - ${formatPrice(5000)}` },
+                      { value: '5000+', label: `Over ${formatPrice(5000)}` }
+                    ].map((option) => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="radio"
+                          value={option.value}
+                          checked={priceRange === option.value}
+                          onChange={(e) => setPriceRange(e.target.value)}
+                          className="mr-2 text-purple-600 focus:ring-purple-500"
+                        />
+                        <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
+                          {option.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Year Range Filter */}
+                <div>
+                  <label className={`block text-sm font-medium mb-3 ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    Historical Period
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: '', label: 'All Periods' },
+                      { value: 'ancient', label: 'Ancient (Before 500 AD)' },
+                      { value: 'medieval', label: 'Medieval (500-1500 AD)' },
+                      { value: 'modern', label: 'Modern (1500+ AD)' }
+                    ].map((option) => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="radio"
+                          value={option.value}
+                          checked={yearRange === option.value}
+                          onChange={(e) => setYearRange(e.target.value)}
+                          className="mr-2 text-purple-600 focus:ring-purple-500"
+                        />
+                        <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
+                          {option.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Clear Filters Button */}
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => {
+                    setPriceRange('')
+                    setYearRange('')
+                    setSearchQuery('')
+                  }}
+                  className="px-4 py-2 text-sm text-purple-600 hover:text-purple-700 font-medium"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {/* Results Count */}
+          <div className={`mt-4 text-sm ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            Showing {filteredCoins.length} of {coins.length} coins
+          </div>
+        </div>
+        
+        {filteredCoins.length === 0 ? (
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">No coins found</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              {searchQuery || priceRange || yearRange 
+                ? 'Try adjusting your search or filters' 
+                : 'Check back soon for new additions to our collection'
+              }
+            </p>
+            {(searchQuery || priceRange || yearRange) && (
+              <button
+                onClick={() => {
+                  setPriceRange('')
+                  setYearRange('')
+                  setSearchQuery('')
+                }}
+                className="px-6 py-3 text-purple-600 hover:text-purple-700 font-medium"
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {coins.map((coin, index) => (
+            {filteredCoins.map((coin, index) => (
               <div
                 key={coin.id}
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"

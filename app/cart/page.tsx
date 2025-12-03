@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Trash2, Plus, Minus, ShoppingCart } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 interface Coin {
   id: number
@@ -19,6 +20,7 @@ interface Coin {
 
 export default function CartPage() {
   const router = useRouter()
+  const { formatPrice, theme } = useGlobal()
   const [cartItems, setCartItems] = useState<(Coin & { quantity: number })[]>([])
   const [totalPrice, setTotalPrice] = useState(0)
 
@@ -69,13 +71,15 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Link 
             href="/coins" 
-            className="inline-flex items-center text-purple-600 hover:text-purple-700 transition-colors"
+            className={`inline-flex items-center transition-colors ${
+              theme === 'dark' ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-700'
+            }`}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Coins
@@ -158,7 +162,7 @@ export default function CartPage() {
                         {/* Price and Remove */}
                         <div className="text-right">
                           <div className="text-lg font-semibold text-purple-600">
-                            {item.price}
+                            {formatPrice(parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity)}
                           </div>
                           <button
                             onClick={() => removeItem(item.id)}
@@ -197,7 +201,7 @@ export default function CartPage() {
                 {/* Subtotal */}
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${totalPrice.toFixed(2)}</span>
+                  <span className="font-medium">{formatPrice(totalPrice)}</span>
                 </div>
 
                 {/* Shipping */}
@@ -216,7 +220,7 @@ export default function CartPage() {
                 <div className="pt-4 border-t border-gray-200">
                   <div className="flex justify-between">
                     <span className="text-lg font-semibold">Total</span>
-                    <span className="text-lg font-bold text-purple-600">${totalPrice.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-purple-600">{formatPrice(totalPrice)}</span>
                   </div>
                 </div>
 

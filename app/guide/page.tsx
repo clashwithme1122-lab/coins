@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { BookOpen, Search, Filter, TrendingUp, Shield, Award, Clock, Users, Star } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function CoinGuidePage() {
+  const { formatPrice, theme } = useGlobal()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
@@ -103,7 +105,7 @@ export default function CoinGuidePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -115,48 +117,53 @@ export default function CoinGuidePage() {
             <BookOpen className="w-16 h-16 mx-auto mb-4" />
             <h1 className="text-4xl font-bold mb-4">Coin Collector's Guide</h1>
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-              Expert guides, tips, and tutorials to help you master the art of coin collecting.
+              Comprehensive guides and tutorials for coin collectors at all levels. From beginner basics to advanced investment strategies.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Prices shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-1">150+</div>
-              <div className="text-sm text-gray-600">Expert Guides</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Expert Guides</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-1">50K+</div>
-              <div className="text-sm text-gray-600">Happy Readers</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Happy Readers</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-1">4.8</div>
-              <div className="text-sm text-gray-600">Average Rating</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Average Rating</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-1">Daily</div>
-              <div className="text-sm text-gray-600">New Content</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>New Content</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white border-b border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'} w-5 h-5`} />
               <input
                 type="text"
                 placeholder="Search guides..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
+                  theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
+                }`}
               />
             </div>
 
@@ -168,7 +175,7 @@ export default function CoinGuidePage() {
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     selectedCategory === category.id
                       ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : theme === 'dark' ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   {category.name}
@@ -189,7 +196,7 @@ export default function CoinGuidePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
             >
               <div className="relative">
                 <img
@@ -205,14 +212,14 @@ export default function CoinGuidePage() {
               </div>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-500 capitalize">{guide.category}</span>
-                  <div className="flex items-center text-sm text-gray-500">
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} capitalize`}>{guide.category}</span>
+                  <div className={`flex items-center text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                     <Clock className="w-4 h-4 mr-1" />
                     {guide.readTime}
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{guide.title}</h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{guide.excerpt}</p>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} text-sm mb-4 line-clamp-2`}>{guide.excerpt}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex text-yellow-400 mr-2">
@@ -220,9 +227,9 @@ export default function CoinGuidePage() {
                         <Star key={i} className={`w-4 h-4 ${i < Math.floor(guide.rating) ? 'fill-current' : ''}`} />
                       ))}
                     </div>
-                    <span className="text-sm text-gray-600">{guide.rating}</span>
+                    <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{guide.rating}</span>
                   </div>
-                  <span className="text-sm text-gray-500">{guide.views.toLocaleString()} views</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{guide.views.toLocaleString()} views</span>
                 </div>
                 <button className="w-full mt-4 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors">
                   Read Guide

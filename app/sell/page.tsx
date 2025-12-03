@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { DollarSign, Upload, Info, CheckCircle, X, RotateCcw } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function SellCoinsPage() {
+  const { formatPrice, theme } = useGlobal()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,11 +15,13 @@ export default function SellCoinsPage() {
     year: '',
     condition: '',
     description: '',
-    images: [] as File[]
+    images: [] as File[],
+    imageUrls: [] as string[]
   })
   const [showSuccessPopup, setShowSuccessPopup] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<{[key: string]: string}>({})
+  const [uploading, setUploading] = useState(false)
 
   const validateForm = (): boolean => {
     const newErrors: {[key: string]: string} = {}
@@ -88,16 +92,27 @@ export default function SellCoinsPage() {
     }
     
     setIsSubmitting(true)
+    setUploading(true)
 
     try {
-      // Convert images to base64 or URLs for storage
+      // Upload images to Cloudinary
       const imageUrls = await Promise.all(
         formData.images.map(async (file) => {
-          return new Promise<string>((resolve) => {
-            const reader = new FileReader()
-            reader.onloadend = () => resolve(reader.result as string)
-            reader.readAsDataURL(file)
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append('folder', 'user-submissions')
+
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
           })
+
+          const result = await response.json()
+          if (result.success) {
+            return result.url
+          } else {
+            throw new Error('Upload failed')
+          }
         })
       )
 
@@ -132,7 +147,8 @@ export default function SellCoinsPage() {
         year: '',
         condition: '',
         description: '',
-        images: []
+        images: [],
+        imageUrls: []
       })
 
     } catch (error) {
@@ -140,6 +156,7 @@ export default function SellCoinsPage() {
       alert('Error submitting form. Please try again.')
     } finally {
       setIsSubmitting(false)
+      setUploading(false)
     }
   }
 
@@ -149,7 +166,7 @@ export default function SellCoinsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -163,6 +180,9 @@ export default function SellCoinsPage() {
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
               Turn your coin collection into cash. We buy rare coins, historical currency, and valuable numismatic items.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Example prices shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
@@ -175,7 +195,7 @@ export default function SellCoinsPage() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl shadow-lg p-8"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-8`}
             >
               <h2 className="text-2xl font-bold mb-6">Sell Your Coins</h2>
               
@@ -198,7 +218,7 @@ export default function SellCoinsPage() {
                           }
                         }}
                         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                          errors.name ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                          errors.name ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                         }`}
                         required
                       />
@@ -220,7 +240,7 @@ export default function SellCoinsPage() {
                           }
                         }}
                         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                          errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                          errors.email ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                         }`}
                         required
                       />
@@ -242,7 +262,7 @@ export default function SellCoinsPage() {
                           }
                         }}
                         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                          errors.phone ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                          errors.phone ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                         }`}
                         required
                       />
@@ -255,7 +275,7 @@ export default function SellCoinsPage() {
 
                 {/* Coin Information */}
                 <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-semibold mb-4">Coin Information</h3>
+                  <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : ''}`}>Coin Information</h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -270,7 +290,7 @@ export default function SellCoinsPage() {
                           }
                         }}
                         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                          errors.coinType ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                          errors.coinType ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                         }`}
                         required
                       >
@@ -302,7 +322,7 @@ export default function SellCoinsPage() {
                             }
                           }}
                           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                            errors.year ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                            errors.year ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                           }`}
                           placeholder="e.g., 1890"
                           required
@@ -324,7 +344,7 @@ export default function SellCoinsPage() {
                             }
                           }}
                           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                            errors.condition ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                            errors.condition ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                           }`}
                         >
                           <option value="">Select condition</option>
@@ -354,7 +374,7 @@ export default function SellCoinsPage() {
                           }
                         }}
                         className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-600 ${
-                          errors.description ? 'border-red-500 focus:border-red-500' : 'border-gray-300'
+                          errors.description ? 'border-red-500 focus:border-red-500' : theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'
                         }`}
                         rows={4}
                         placeholder="Describe your coin, including any notable features, history, or markings..."
@@ -368,15 +388,15 @@ export default function SellCoinsPage() {
 
                 {/* Image Upload */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Upload Images</h3>
+                  <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : ''}`}>Upload Images</h3>
                   <div className={`border-2 border-dashed rounded-lg p-6 text-center ${
-                    errors.images ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    errors.images ? 'border-red-500 bg-red-50' : theme === 'dark' ? 'border-gray-600 bg-gray-800' : 'border-gray-300'
                   }`}>
-                    <Upload className={`w-12 h-12 mx-auto mb-4 ${errors.images ? 'text-red-400' : 'text-gray-400'}`} />
-                    <p className={`mb-2 ${errors.images ? 'text-red-600' : 'text-gray-600'}`}>
+                    <Upload className={`w-12 h-12 mx-auto mb-4 ${errors.images ? 'text-red-400' : theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`} />
+                    <p className={`mb-2 ${errors.images ? 'text-red-600' : theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                       {errors.images || 'Upload clear images of your coins'}
                     </p>
-                    <p className="text-sm text-gray-500 mb-4">Front, back, and any notable details</p>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mb-4`}>Front, back, and any notable details</p>
                     <input
                       type="file"
                       multiple
@@ -399,7 +419,7 @@ export default function SellCoinsPage() {
                   </div>
                   {formData.images.length > 0 && (
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600 mb-4">
+                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-4`}>
                         {formData.images.length} image(s) selected
                       </p>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -423,7 +443,7 @@ export default function SellCoinsPage() {
                             
                             {/* File Name */}
                             <div className="mt-1">
-                              <p className="text-xs text-gray-600 truncate">{file.name}</p>
+                              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} truncate`}>{file.name}</p>
                             </div>
                           </div>
                         ))}
@@ -434,10 +454,10 @@ export default function SellCoinsPage() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || uploading}
                   className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Submit for Evaluation'}
+                  {uploading ? 'Uploading images...' : isSubmitting ? 'Submitting...' : 'Submit for Evaluation'}
                 </button>
               </form>
             </motion.div>
@@ -449,25 +469,25 @@ export default function SellCoinsPage() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}
             >
-              <h3 className="text-lg font-semibold mb-4">Why Sell to Taksila Coins?</h3>
+              <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : ''}`}>Why Sell to Taksila Coins?</h3>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-600">Competitive prices based on current market values</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Competitive prices based on current market values</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-600">Free professional appraisals</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Free professional appraisals</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-600">Fast and secure payment processing</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Fast and secure payment processing</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-600">Expert numismatists on staff</span>
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Expert numismatists on staff</span>
                 </li>
               </ul>
             </motion.div>
@@ -477,17 +497,17 @@ export default function SellCoinsPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}
             >
-              <h3 className="text-lg font-semibold mb-4">How It Works</h3>
+              <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : ''}`}>How It Works</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-sm font-semibold mr-3">
                     1
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900">Submit Your Coins</h4>
-                    <p className="text-sm text-gray-600">Fill out the form with coin details</p>
+                    <h4 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Submit Your Coins</h4>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Fill out the form with coin details</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -495,8 +515,8 @@ export default function SellCoinsPage() {
                     2
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900">Get Evaluation</h4>
-                    <p className="text-sm text-gray-600">Our experts review and appraise your coins</p>
+                    <h4 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Get Evaluation</h4>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Our experts review and appraise your coins</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -504,8 +524,8 @@ export default function SellCoinsPage() {
                     3
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900">Receive Offer</h4>
-                    <p className="text-sm text-gray-600">Get a competitive purchase offer</p>
+                    <h4 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Receive Offer</h4>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Get a competitive purchase offer</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -513,8 +533,8 @@ export default function SellCoinsPage() {
                     4
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900">Get Paid</h4>
-                    <p className="text-sm text-gray-600">Accept offer and receive payment</p>
+                    <h4 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Get Paid</h4>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Accept offer and receive payment</p>
                   </div>
                 </div>
               </div>
@@ -525,13 +545,13 @@ export default function SellCoinsPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-purple-50 rounded-xl p-6"
+              className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-purple-50'} rounded-xl p-6`}
             >
               <div className="flex items-center mb-4">
                 <Info className="w-6 h-6 text-purple-600 mr-2" />
-                <h3 className="text-lg font-semibold">Questions?</h3>
+                <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>Questions?</h3>
               </div>
-              <p className="text-gray-600 mb-4">
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-4`}>
                 Have questions about selling your coins? Our expert team is here to help.
               </p>
               <div className="space-y-2">
@@ -557,27 +577,18 @@ export default function SellCoinsPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4"
+            className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-2xl p-8 max-w-md mx-4`}
           >
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Submission Successful!</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-2`}>Submission Successful!</h3>
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
                 Thank you for submitting your coin for evaluation. Our expert team will review your submission and get back to you within 24-48 hours with a competitive offer.
               </p>
-              <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                <h4 className="font-semibold text-gray-900 mb-2">What happens next:</h4>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Our numismatists will review your coin details</li>
-                  <li>• You'll receive an email with our evaluation</li>
-                  <li>• We'll send a competitive purchase offer</li>
-                  <li>• Accept or decline the offer - no obligation</li>
-                </ul>
-              </div>
-              <div className="bg-purple-50 rounded-lg p-4 mb-6">
-                <p className="text-sm text-purple-800">
+              <div className={`bg-${theme === 'dark' ? 'gray-700' : 'purple-50'} rounded-lg p-4 mb-6`}>
+                <p className={`text-sm ${theme === 'dark' ? 'text-purple-200' : 'text-purple-800'}`}>
                   <strong>Reference ID:</strong> #{Date.now()}<br />
                   <strong>Email:</strong> {formData.email || 'N/A'}
                 </p>

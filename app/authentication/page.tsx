@@ -2,32 +2,41 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, CheckCircle, AlertTriangle, Search, Camera, FileText, Award, Clock, Users } from 'lucide-react'
+import { Shield, CheckCircle, Star, Award, Clock, Users, FileText, Camera, Search } from 'lucide-react'
+import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function AuthenticationPage() {
+  const { formatPrice, theme } = useGlobal()
   const [selectedService, setSelectedService] = useState('basic')
 
   const services = [
     {
       id: 'basic',
       title: 'Basic Authentication',
-      price: '$50',
-      duration: '2-3 business days',
-      features: ['Visual authentication', 'Basic condition report', 'Certificate of authenticity', 'Online verification']
+      price: formatPrice(50),
+      duration: '5-7 business days',
+      features: ['Visual authentication', 'Basic condition assessment', 'Certificate of authenticity', 'Digital records']
     },
     {
-      id: 'advanced',
-      title: 'Advanced Authentication',
-      price: '$125',
-      duration: '5-7 business days',
-      features: ['Expert visual authentication', 'Detailed grading report', 'Metal composition analysis', 'Historical verification', 'Market value assessment']
+      id: 'standard',
+      title: 'Standard Authentication',
+      price: formatPrice(125),
+      duration: '3-5 business days',
+      features: ['Expert visual review', 'Detailed condition report', 'Photographic documentation', 'Official certificate', 'Online verification']
     },
     {
       id: 'premium',
       title: 'Premium Authentication',
-      price: '$250',
-      duration: '7-10 business days',
-      features: ['Laboratory analysis', 'Scientific authentication', 'XRF testing', 'Microscopic examination', 'Comprehensive documentation', 'Insurance valuation']
+      price: formatPrice(250),
+      duration: '1-2 business days',
+      features: ['Senior numismatist review', 'Scientific analysis', 'Historical research', 'Comprehensive report', 'Priority service', 'Insurance documentation']
+    },
+    {
+      id: 'express',
+      title: 'Express Authentication',
+      price: formatPrice(400),
+      duration: 'Same day service',
+      features: ['Immediate expert review', 'Rapid authentication', 'Express certification', 'Priority processing', 'Same-day shipping', 'Digital + physical certificate']
     }
   ]
 
@@ -100,7 +109,7 @@ export default function AuthenticationPage() {
     },
     {
       name: "Sarah Chen",
-      service: "Advanced Authentication",
+      service: "Standard Authentication",
       comment: "Professional service with detailed reports. Now I can sell my collection with confidence.",
       rating: 5
     },
@@ -123,7 +132,7 @@ export default function AuthenticationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -135,14 +144,17 @@ export default function AuthenticationPage() {
             <Shield className="w-16 h-16 mx-auto mb-4" />
             <h1 className="text-4xl font-bold mb-4">Coin Authentication Services</h1>
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-              Professional authentication and certification by expert numismatists. Protect your investment with verified authenticity.
+              Professional coin authentication services by certified numismatists. Get your coins verified and certified for maximum value and confidence.
             </p>
+            <div className="mt-4 text-sm text-purple-200">
+              Prices shown in {formatPrice(100).split('100')[0]}100
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="bg-white border-b border-gray-200">
+      {/* Process */}
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
@@ -165,17 +177,17 @@ export default function AuthenticationPage() {
         </div>
       </div>
 
-      {/* Authentication Services */}
+      {/* Services Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold text-center mb-8">Choose Authentication Service</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-white rounded-xl shadow-lg p-6 cursor-pointer transition-all ${
+              className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 cursor-pointer transition-all ${
                 selectedService === service.id ? 'ring-2 ring-purple-600' : 'hover:shadow-xl'
               }`}
               onClick={() => setSelectedService(service.id)}
@@ -183,13 +195,13 @@ export default function AuthenticationPage() {
               <div className="text-center mb-6">
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <div className="text-3xl font-bold text-purple-600 mb-1">{service.price}</div>
-                <p className="text-sm text-gray-500">{service.duration}</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>{service.duration}</p>
               </div>
               <ul className="space-y-3">
                 {service.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start">
                     <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">{feature}</span>
+                    <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -199,54 +211,10 @@ export default function AuthenticationPage() {
             </motion.div>
           ))}
         </div>
-
-        {/* Service Details */}
-        <motion.div
-          key={selectedService}
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-purple-50 rounded-xl p-8"
-        >
-          <h3 className="text-xl font-semibold mb-4">{currentService.title} - What's Included</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-medium mb-3">Authentication Process</h4>
-              <ul className="space-y-2">
-                {currentService.features.map((feature, index) => (
-                  <li key={index} className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-medium mb-3">Deliverables</h4>
-              <ul className="space-y-2">
-                <li className="flex items-center">
-                  <FileText className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-sm text-gray-700">Detailed authentication report</span>
-                </li>
-                <li className="flex items-center">
-                  <Award className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-sm text-gray-700">Certificate of authenticity</span>
-                </li>
-                <li className="flex items-center">
-                  <Camera className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-sm text-gray-700">High-resolution images</span>
-                </li>
-                <li className="flex items-center">
-                  <Search className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-sm text-gray-700">Online verification access</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Authentication Process */}
-      <div className="bg-white border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Our Authentication Process</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -262,8 +230,8 @@ export default function AuthenticationPage() {
                   <step.icon className="w-8 h-8" />
                 </div>
                 <div className="text-lg font-semibold mb-2">Step {step.step}</div>
-                <h3 className="font-medium mb-2">{step.title}</h3>
-                <p className="text-sm text-gray-600">{step.description}</p>
+                <h3 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : ''}`}>{step.title}</h3>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{step.description}</p>
               </motion.div>
             ))}
           </div>
@@ -271,7 +239,7 @@ export default function AuthenticationPage() {
       </div>
 
       {/* Counterfeit Detection */}
-      <div className="bg-gray-50 border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Common Counterfeit Signs</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -308,7 +276,7 @@ export default function AuthenticationPage() {
       </div>
 
       {/* Testimonials */}
-      <div className="bg-white border-t border-gray-200">
+      <div className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Client Testimonials</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -318,7 +286,7 @@ export default function AuthenticationPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-gray-50 rounded-xl p-6"
+                className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-xl p-6`}
               >
                 <div className="flex items-center mb-4">
                   <div className="flex text-yellow-400">
@@ -327,10 +295,10 @@ export default function AuthenticationPage() {
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-600 mb-4">"{testimonial.comment}"</p>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-4`}>"{testimonial.comment}"</p>
                 <div>
                   <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-gray-500">{testimonial.service}</p>
+                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{testimonial.service}</p>
                 </div>
               </motion.div>
             ))}
@@ -342,8 +310,8 @@ export default function AuthenticationPage() {
       <div className="bg-purple-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
           <Shield className="w-12 h-12 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold mb-4">Protect Your Investment</h2>
-          <p className="text-purple-100 mb-6">
+          <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : ''}`}>Ready to Authenticate Your Coins?</h2>
+          <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>
             Don't risk buying or selling counterfeit coins. Get professional authentication from trusted experts.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

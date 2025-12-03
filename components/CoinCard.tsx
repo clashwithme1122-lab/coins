@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Star } from 'lucide-react'
+import { Star, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
 
 interface Coin {
@@ -30,7 +30,14 @@ export default function CoinCard({ coin, index = 0 }: CoinCardProps) {
       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
     >
       {/* Coin Image */}
-      <div className="relative h-48 bg-gray-100 overflow-hidden">
+      <div className="relative h-48 bg-gray-100 overflow-hidden group">
+        {/* Reverse Icon */}
+        <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors">
+            <RotateCcw className="w-4 h-4 text-purple-600" />
+          </button>
+        </div>
+        
         <motion.img
           src={coin.frontImage}
           alt={`${coin.title} - Front`}

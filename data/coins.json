@@ -36,27 +36,15 @@
     "historicalValue": "First European gold coin since Roman times"
   },
   {
-    "title": "taj",
-    "price": "321",
-    "weight": "3.4g",
-    "year": "2012",
-    "description": "jeee",
-    "frontImage": "/assets/dummycoin.jpg",
-    "backImage": "/assets/dummycoin.jpg",
-    "weightImage": "/assets/dummycoinweight..jpg",
-    "historicalValue": "ppppppppp",
+    "title": "American Eagle",
+    "price": "2500",
+    "weight": "2.5g",
+    "year": "2002",
+    "description": "Pure Coin with solid gold inside and outside",
+    "frontImage": "https://res.cloudinary.com/dvzojxwma/image/upload/v1764748744/coins/ozqxpupyz8ldldgoh4pn.jpg",
+    "backImage": "https://res.cloudinary.com/dvzojxwma/image/upload/v1764748744/coins/g2vukeno9806xbrq6qqs.webp",
+    "weightImage": "https://res.cloudinary.com/dvzojxwma/image/upload/v1764748745/coins/rfi16zj8m2iipvzovls3.png",
+    "historicalValue": "has very impact",
     "id": 4
-  },
-  {
-    "title": "wq",
-    "price": "weq",
-    "weight": "12",
-    "year": "2322",
-    "description": "213EAFDS",
-    "frontImage": "blob:http://localhost:3000/8e85c71d-b880-404d-9f74-f19849b8f2da",
-    "backImage": "blob:http://localhost:3000/7efee8c6-cac1-4dd3-afab-2845b2071d8c",
-    "weightImage": "blob:http://localhost:3000/9c9f829d-b2ae-4b2e-9995-2925ebbd86b9",
-    "historicalValue": "3211EQWDA",
-    "id": 5
   }
 ]
