@@ -10,6 +10,21 @@ export default function CoinGuidePage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
+  const handleReadGuide = (guideId: number, guideTitle: string) => {
+    // Map guide IDs to authentic coin documentation URLs
+    const guideUrls = {
+      1: 'https://www.usmint.gov/learn/coin-collecting/basics', // Getting Started
+      2: 'https://www.pcgs.com/grades', // Coin Grading
+      3: 'https://www.ngccoin.com/coin-grading-guide/', // Investing
+      4: 'https://www.ha.com/c/feature.zx?page=coin-authentication', // Authentication
+      5: 'https://www.money.org/coin-resources', // Historical
+      6: 'https://www.usmint.gov/learn/coin-and-medal-programs/coin-programs' // Modern
+    }
+
+    const url = guideUrls[guideId as keyof typeof guideUrls] || 'https://www.money.org/coin-resources'
+    window.open(url, '_blank')
+  }
+
   const categories = [
     { id: 'all', name: 'All Topics', icon: BookOpen },
     { id: 'basics', name: 'Coin Basics', icon: BookOpen },
@@ -231,7 +246,10 @@ export default function CoinGuidePage() {
                   </div>
                   <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{guide.views.toLocaleString()} views</span>
                 </div>
-                <button className="w-full mt-4 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                <button 
+                  onClick={() => handleReadGuide(guide.id, guide.title)}
+                  className="w-full mt-4 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors"
+                >
                   Read Guide
                 </button>
               </div>
@@ -284,7 +302,10 @@ export default function CoinGuidePage() {
                       </div>
                       <span className="text-xs text-gray-600">{guide.rating}</span>
                     </div>
-                    <button className="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                    <button 
+                      onClick={() => handleReadGuide(guide.id, guide.title)}
+                      className="text-purple-600 hover:text-purple-700 text-sm font-medium"
+                    >
                       Read →
                     </button>
                   </div>

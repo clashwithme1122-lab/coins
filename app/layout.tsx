@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { GlobalProvider } from '@/contexts/GlobalContext'
+import Chatbot from '@/components/Chatbot'
 
 const inter = Inter({ subsets: ['latin'] })
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700', '800'] })
@@ -56,6 +57,7 @@ export default function RootLayout({
               <Footer />
             </div>
           </div>
+          <Chatbot />
         </GlobalProvider>
       </body>
     </html>

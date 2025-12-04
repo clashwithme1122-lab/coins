@@ -46,6 +46,18 @@ interface UserSubmission {
   status: 'pending' | 'approved' | 'rejected'
 }
 
+interface AppraisalRequest {
+  id: string
+  name: string
+  email: string
+  phone: string
+  coinType: string
+  description: string
+  images: File[]
+  submittedAt: string
+  status: 'pending' | 'approved' | 'rejected'
+}
+
 export default function AdminDashboardPage() {
   const { theme } = useGlobal()
   const { showSuccess, showError, showWarning, showInfo } = useToast()
@@ -53,8 +65,10 @@ export default function AdminDashboardPage() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingCoin, setEditingCoin] = useState<Coin | null>(null)
   const [userSubmissions, setUserSubmissions] = useState<UserSubmission[]>([])
-  const [activeTab, setActiveTab] = useState<'coins' | 'submissions'>('coins')
+  const [activeTab, setActiveTab] = useState<'coins' | 'submissions' | 'appraisals'>('coins')
+  const [appraisals, setAppraisals] = useState<AppraisalRequest[]>([])
   const [selectedSubmission, setSelectedSubmission] = useState<UserSubmission | null>(null)
+  const [selectedAppraisal, setSelectedAppraisal] = useState<AppraisalRequest | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
   const [formData, setFormData] = useState<Partial<Coin>>({
     title: '',
@@ -79,6 +93,7 @@ export default function AdminDashboardPage() {
     } else {
       loadCoins()
       loadUserSubmissions()
+      loadAppraisals()
     }
   }, [router])
 
@@ -149,6 +164,16 @@ export default function AdminDashboardPage() {
     } catch (error) {
       console.error('Error loading submissions:', error)
       setUserSubmissions([])
+    }
+  }
+
+  const loadAppraisals = () => {
+    try {
+      const savedAppraisals = JSON.parse(localStorage.getItem('appraisals') || '[]')
+      setAppraisals(savedAppraisals)
+    } catch (error) {
+      console.error('Error loading appraisals:', error)
+      setAppraisals([])
     }
   }
 
@@ -241,6 +266,38 @@ export default function AdminDashboardPage() {
         console.error('Error deleting coin:', error)
         showError('Network error: Failed to delete coin')
       }
+    }
+  }
+
+  const approveAppraisal = (id: string) => {
+    const updatedAppraisals = appraisals.map(appraisal => 
+      appraisal.id === id 
+        ? { ...appraisal, status: 'approved' as const }
+        : appraisal
+    )
+    setAppraisals(updatedAppraisals)
+    
+    // Save to localStorage
+    localStorage.setItem('appraisals', JSON.stringify(updatedAppraisals))
+    
+    const appraisal = appraisals.find(a => a.id === id)
+    showSuccess(`Appraisal from ${appraisal?.name} approved successfully!`, 4000)
+  }
+
+  const rejectAppraisal = (id: string) => {
+    if (confirm('Are you sure you want to reject this appraisal request?')) {
+      const updatedAppraisals = appraisals.map(appraisal => 
+        appraisal.id === id 
+          ? { ...appraisal, status: 'rejected' as const }
+          : appraisal
+      )
+      setAppraisals(updatedAppraisals)
+      
+      // Save to localStorage
+      localStorage.setItem('appraisals', JSON.stringify(updatedAppraisals))
+      
+      const appraisal = appraisals.find(a => a.id === id)
+      showWarning(`Appraisal from ${appraisal?.name} rejected`, 4000)
     }
   }
 
@@ -398,6 +455,16 @@ export default function AdminDashboardPage() {
                 }`}
               >
                 User Submissions ({userSubmissions.filter(s => s.status === 'pending').length} pending)
+              </button>
+              <button
+                onClick={() => setActiveTab('appraisals')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'appraisals'
+                    ? 'border-purple-600 text-purple-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Appraisals ({appraisals.filter(a => a.status === 'pending').length} pending)
               </button>
             </nav>
           </div>
@@ -899,6 +966,102 @@ export default function AdminDashboardPage() {
               )}
             </div>
           </>
+        )}
+
+        {/* Appraisals Tab Content */}
+        {activeTab === 'appraisals' && (
+          <div>
+            <h2 className="text-xl font-semibold mb-6">Appraisal Requests</h2>
+            
+            {appraisals.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-gray-500 mb-2">No appraisal requests yet</div>
+                <div className="text-sm text-gray-400">Appraisal requests will appear here when users submit them</div>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Coin Type
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Submitted
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {appraisals.map((appraisal) => (
+                      <tr key={appraisal.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">{appraisal.name}</div>
+                            <div className="text-sm text-gray-500">{appraisal.email}</div>
+                            <div className="text-sm text-gray-500">{appraisal.phone}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {appraisal.coinType}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-gray-900 max-w-xs truncate">
+                            {appraisal.description}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(appraisal.submittedAt).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            appraisal.status === 'approved' 
+                              ? 'bg-green-100 text-green-800'
+                              : appraisal.status === 'rejected'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {appraisal.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          {appraisal.status === 'pending' && (
+                            <>
+                              <button
+                                onClick={() => approveAppraisal(appraisal.id)}
+                                className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors mr-2"
+                                title="Approve"
+                              >
+                                <Check className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => rejectAppraisal(appraisal.id)}
+                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="Reject"
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

@@ -45,20 +45,29 @@ export default function MarketAnalysisPage() {
   ]
 
   const topGainers = [
-    { name: "1909-S VDB Lincoln", price: formatPrice(3200), change: "+24.5%", volume: "High" },
-    { name: "Roman Aureus", price: formatPrice(8500), change: "+18.2%", volume: "Medium" },
-    { name: "Morgan Dollar 1893-S", price: formatPrice(2100), change: "+15.8%", volume: "High" },
-    { name: "Greek Tetradrachm", price: formatPrice(4300), change: "+12.3%", volume: "Low" },
-    { name: "British Sovereign", price: formatPrice(1450), change: "+10.1%", volume: "Medium" }
+    { name: "1909-S VDB Lincoln", price: formatPrice(3200), change: "+24.5%", volume: "High", category: "us" },
+    { name: "Roman Aureus", price: formatPrice(8500), change: "+18.2%", volume: "Medium", category: "ancient" },
+    { name: "Morgan Dollar 1893-S", price: formatPrice(2100), change: "+15.8%", volume: "High", category: "us" },
+    { name: "Greek Tetradrachm", price: formatPrice(4300), change: "+12.3%", volume: "Low", category: "ancient" },
+    { name: "British Sovereign", price: formatPrice(1450), change: "+10.1%", volume: "Medium", category: "world" }
   ]
 
   const topLosers = [
-    { name: "Modern Commemorative", price: formatPrice(120), change: "-8.5%", volume: "Low" },
-    { name: "Common Wheat Cent", price: formatPrice(45), change: "-6.2%", volume: "High" },
-    { name: "Silver Eagle 2022", price: formatPrice(28), change: "-4.3%", volume: "High" },
-    { name: "Buffalo Nickel", price: formatPrice(85), change: "-3.8%", volume: "Medium" },
-    { name: "Jefferson Nickel", price: formatPrice(12), change: "-2.1%", volume: "Low" }
+    { name: "Modern Commemorative", price: formatPrice(120), change: "-8.5%", volume: "Low", category: "modern" },
+    { name: "Common Wheat Cent", price: formatPrice(45), change: "-6.2%", volume: "High", category: "us" },
+    { name: "Silver Eagle 2022", price: formatPrice(28), change: "-4.3%", volume: "High", category: "bullion" },
+    { name: "Buffalo Nickel", price: formatPrice(85), change: "-3.8%", volume: "Medium", category: "us" },
+    { name: "Jefferson Nickel", price: formatPrice(12), change: "-2.1%", volume: "Low", category: "us" }
   ]
+
+  // Filter data based on selected category
+  const filteredGainers = selectedCategory === 'all' 
+    ? topGainers 
+    : topGainers.filter(coin => coin.category === selectedCategory)
+  
+  const filteredLosers = selectedCategory === 'all'
+    ? topLosers
+    : topLosers.filter(coin => coin.category === selectedCategory)
 
   const marketTrends = [
     {
@@ -211,7 +220,7 @@ export default function MarketAnalysisPage() {
                 <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Last 24 hours</span>
               </div>
               <div className="space-y-4">
-                {topGainers.map((coin, index) => (
+                {filteredGainers.map((coin, index) => (
                   <div key={index} className={`flex items-center justify-between p-3 ${
                       theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
                     } rounded-lg transition-colors`}>
@@ -243,7 +252,7 @@ export default function MarketAnalysisPage() {
                 <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Last 24 hours</span>
               </div>
               <div className="space-y-4">
-                {topLosers.map((coin, index) => (
+                {filteredLosers.map((coin, index) => (
                   <div key={index} className={`flex items-center justify-between p-3 ${
                       theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
                     } rounded-lg transition-colors`}>

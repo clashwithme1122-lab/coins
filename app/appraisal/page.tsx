@@ -18,10 +18,44 @@ export default function AppraisalPage() {
 
   const [showSuccess, setShowSuccess] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setShowSuccess(true)
-    setTimeout(() => setShowSuccess(false), 5000)
+    
+    try {
+      // Create form data for submission
+      const submissionData = {
+        ...formData,
+        submittedAt: new Date().toISOString(),
+        status: 'pending'
+      }
+
+      // Here you would normally send to your backend API
+      // For now, we'll simulate and store in localStorage for admin to view
+      const existingAppraisals = JSON.parse(localStorage.getItem('appraisals') || '[]')
+      const newAppraisal = {
+        id: Date.now().toString(),
+        ...submissionData
+      }
+      localStorage.setItem('appraisals', JSON.stringify([...existingAppraisals, newAppraisal]))
+
+      console.log('Appraisal submitted:', newAppraisal)
+      
+      setShowSuccess(true)
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        coinType: '',
+        description: '',
+        images: []
+      })
+      
+      setTimeout(() => setShowSuccess(false), 5000)
+    } catch (error) {
+      console.error('Error submitting appraisal:', error)
+      alert('Error submitting appraisal. Please try again.')
+    }
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

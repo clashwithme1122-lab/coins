@@ -9,6 +9,22 @@ export default function StoragePage() {
   const { formatPrice, theme } = useGlobal()
   const [selectedPlan, setSelectedPlan] = useState('individual')
 
+  const handleSelectPlan = (planId: string) => {
+    setSelectedPlan(planId)
+    // Here you would normally navigate to checkout or show a signup form
+    alert(`Selected ${planId} plan. Redirecting to signup...`)
+  }
+
+  const handleStartStorage = () => {
+    // Navigate to signup or checkout
+    alert('Starting storage plan setup...')
+  }
+
+  const handleScheduleConsultation = () => {
+    // Navigate to consultation booking or show contact form
+    alert('Scheduling consultation...')
+  }
+
   const storagePlans = [
     {
       id: 'individual',
@@ -154,7 +170,10 @@ export default function StoragePage() {
                   </li>
                 ))}
               </ul>
-              <button className="w-full mt-6 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+              <button 
+                onClick={() => handleSelectPlan(plan.id)}
+                className="w-full mt-6 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors"
+              >
                 Select Plan
               </button>
             </motion.div>
@@ -385,10 +404,16 @@ export default function StoragePage() {
             Don't risk your valuable collection to home storage risks. Trust professional vault services with bank-level security.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button 
+              onClick={handleStartStorage}
+              className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
               Start Storage Plan
             </button>
-            <button className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+            <button 
+              onClick={handleScheduleConsultation}
+              className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+            >
               Schedule Consultation
             </button>
           </div>

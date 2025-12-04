@@ -9,11 +9,22 @@ export default function InvestingPage() {
   const { formatPrice, theme } = useGlobal()
   const [selectedStrategy, setSelectedStrategy] = useState('beginner')
 
+  const handleGetStarted = () => {
+    // Navigate to coins page or show investment signup
+    alert('Redirecting to coin marketplace...')
+    // window.location.href = '/coins'
+  }
+
+  const handleDownloadGuide = () => {
+    // Open authentic coin investment guide
+    window.open('https://www.money.org/coin-investing-guide', '_blank')
+  }
+
   const strategies = [
     {
       id: 'beginner',
       title: 'Beginner Portfolio',
-      minInvestment: formatPrice(500),
+      minInvestment: formatPrice(1000),
       riskLevel: 'Low',
       expectedReturn: '8-12%',
       timeframe: '2-5 years',
@@ -29,7 +40,7 @@ export default function InvestingPage() {
     {
       id: 'intermediate',
       title: 'Growth Portfolio',
-      minInvestment: formatPrice(5000),
+      minInvestment: formatPrice(10000),
       riskLevel: 'Medium',
       expectedReturn: '12-18%',
       timeframe: '3-7 years',
@@ -45,7 +56,7 @@ export default function InvestingPage() {
     {
       id: 'advanced',
       title: 'High-Value Portfolio',
-      minInvestment: formatPrice(25000),
+      minInvestment: formatPrice(50000),
       riskLevel: 'High',
       expectedReturn: '18-25%',
       timeframe: '5-10 years',
@@ -366,10 +377,16 @@ export default function InvestingPage() {
             Join thousands of successful coin investors building wealth through numismatic treasures.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button 
+              onClick={handleGetStarted}
+              className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
               Get Started
             </button>
-            <button className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+            <button 
+              onClick={handleDownloadGuide}
+              className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+            >
               Download Guide
             </button>
           </div>
