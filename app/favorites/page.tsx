@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Heart, Star } from 'lucide-react'
 import { useGlobal } from '@/contexts/GlobalContext'
+import coinsData from '@/data/coins.json'
 
 interface Coin {
   id: number
@@ -28,14 +29,20 @@ export default function FavoritesPage() {
   }, [])
 
   const loadFavorites = () => {
-    const favs = JSON.parse(localStorage.getItem('favorites') || '[]')
-    setFavorites(favs)
+    const favIds = JSON.parse(localStorage.getItem('favorites') || '[]')
+    // Get full coin objects from coinsData based on favorite IDs
+    const favCoins = coinsData.filter(coin => favIds.includes(coin.id))
+    setFavorites(favCoins)
   }
 
   const removeFromFavorites = (id: number) => {
+    const favIds = JSON.parse(localStorage.getItem('favorites') || '[]')
+    const updatedFavIds = favIds.filter((favId: number) => favId !== id)
+    localStorage.setItem('favorites', JSON.stringify(updatedFavIds))
+    
+    // Update the displayed favorites
     const updatedFavorites = favorites.filter(coin => coin.id !== id)
     setFavorites(updatedFavorites)
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
   }
 
   return (
@@ -122,7 +129,7 @@ export default function FavoritesPage() {
                 <div>
                   <div className="text-2xl font-bold text-purple-600">
                     {formatPrice(favorites.reduce((sum, coin) => {
-                      const price = parseFloat(coin.price.replace(/[^0-9.]/g, ''))
+                      const price = coin.price ? parseFloat(coin.price.replace(/[^0-9.]/g, '')) : 0
                       return sum + price
                     }, 0))}
                   </div>

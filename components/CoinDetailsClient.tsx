@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Star, ShoppingCart, Heart, Share2 } from 'lucide-react'
 import Image from 'next/image'
 import { useGlobal } from '@/contexts/GlobalContext'
@@ -25,6 +25,18 @@ interface CoinDetailsClientProps {
 export default function CoinDetailsClient({ coin }: CoinDetailsClientProps) {
   const { formatPrice, theme } = useGlobal()
   const [activeImage, setActiveImage] = useState<'front' | 'back' | 'weight'>('front')
+  const [favorites, setFavorites] = useState<number[]>([])
+  const [shareMessage, setShareMessage] = useState('')
+
+  // Load favorites from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedFavorites = localStorage.getItem('favorites')
+      if (savedFavorites) {
+        setFavorites(JSON.parse(savedFavorites))
+      }
+    }
+  }, [])
 
   const addToCart = () => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]')
@@ -33,14 +45,52 @@ export default function CoinDetailsClient({ coin }: CoinDetailsClientProps) {
     alert('Added to cart!')
   }
 
-  const addToFavorites = () => {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
-    if (!favorites.find((fav: Coin) => fav.id === coin.id)) {
-      favorites.push(coin)
-      localStorage.setItem('favorites', JSON.stringify(favorites))
-      alert('Added to favorites!')
+  const toggleFavorite = () => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(coin.id)
+        ? prev.filter(id => id !== coin.id)
+        : [...prev, coin.id]
+      
+      // Save to localStorage
+      localStorage.setItem('favorites', JSON.stringify(newFavorites))
+      
+      // Show message
+      if (newFavorites.includes(coin.id)) {
+        setShareMessage('Added to favorites!')
+      } else {
+        setShareMessage('Removed from favorites')
+      }
+      setTimeout(() => setShareMessage(''), 3000)
+      
+      return newFavorites
+    })
+  }
+
+  const shareCoin = async () => {
+    const coinUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/coins/${coin.id}`
+    
+    // Check if Web Share API is available (mobile)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: coin.title,
+          text: `Check out this amazing coin: ${coin.title} - ${coin.description}`,
+          url: coinUrl,
+        })
+      } catch (error) {
+        // User cancelled sharing
+        console.log('Share cancelled')
+      }
     } else {
-      alert('Already in favorites!')
+      // Fallback: Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(coinUrl)
+        setShareMessage('Link copied to clipboard!')
+        setTimeout(() => setShareMessage(''), 3000)
+      } catch (error) {
+        setShareMessage('Failed to copy link')
+        setTimeout(() => setShareMessage(''), 3000)
+      }
     }
   }
 
@@ -52,6 +102,13 @@ export default function CoinDetailsClient({ coin }: CoinDetailsClientProps) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      {/* Share Message Toast */}
+      {shareMessage && (
+        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-pulse">
+          {shareMessage}
+        </div>
+      )}
+      
       {/* Images Section */}
       <div>
         {/* Main Image */}
@@ -115,15 +172,23 @@ export default function CoinDetailsClient({ coin }: CoinDetailsClientProps) {
                 {formatPrice(parseFloat(coin.price.replace(/[^0-9.]/g, '')))}
               </span>
               <div className={`flex space-x-2`}>
-                <button className={`p-2 border rounded-lg transition-colors ${
-                  theme === 'dark' ? 'border-gray-600 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'
-                }`}>
-                  <Heart className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'}`} />
+                <button 
+                  onClick={toggleFavorite}
+                  className={`p-2 border rounded-lg transition-colors ${
+                    theme === 'dark' ? 'border-gray-600 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'
+                  }`}
+                  title={favorites.includes(coin.id) ? 'Remove from favorites' : 'Add to favorites'}
+                >
+                  <Heart className={`w-5 h-5 ${favorites.includes(coin.id) ? 'fill-red-500 text-red-500' : 'text-red-500'}`} />
                 </button>
-                <button className={`p-2 border rounded-lg transition-colors ${
-                  theme === 'dark' ? 'border-gray-600 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'
-                }`}>
-                  <Share2 className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'}`} />
+                <button 
+                  onClick={shareCoin}
+                  className={`p-2 border rounded-lg transition-colors ${
+                    theme === 'dark' ? 'border-gray-600 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'
+                  }`}
+                  title="Share coin"
+                >
+                  <Share2 className={`w-5 h-5 text-purple-600`} />
                 </button>
               </div>
             </div>
@@ -168,11 +233,15 @@ export default function CoinDetailsClient({ coin }: CoinDetailsClientProps) {
             </button>
             
             <button 
-              onClick={addToFavorites}
-              className="w-full border border-purple-600 text-purple-600 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors duration-200 flex items-center justify-center text-sm sm:text-base"
+              onClick={toggleFavorite}
+              className={`w-full border py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center text-sm sm:text-base ${
+                favorites.includes(coin.id)
+                  ? 'border-red-500 text-red-500 hover:bg-red-50'
+                  : 'border-purple-600 text-purple-600 hover:bg-purple-50'
+              }`}
             >
-              <Star className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              Add to Favorites
+              <Heart className={`w-4 h-4 sm:w-5 sm:h-5 mr-2 ${favorites.includes(coin.id) ? 'fill-current' : ''}`} />
+              {favorites.includes(coin.id) ? 'Remove from Favorites' : 'Add to Favorites'}
             </button>
           </div>
 

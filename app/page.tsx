@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Star, Shield, Clock, RotateCcw, Search, ChevronLeft, ChevronRight, Heart, Share2 } from 'lucide-react'
+import { ArrowRight, Star, Shield, Clock, RotateCcw, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useGlobal } from '@/contexts/GlobalContext'
 import coinsData from '@/data/coins.json'
@@ -12,8 +12,6 @@ export default function HomePage() {
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [currentCoinIndex, setCurrentCoinIndex] = useState(0)
   const [coinImageStates, setCoinImageStates] = useState<{[key: number]: 'front' | 'back'}>({})
-  const [favorites, setFavorites] = useState<number[]>([])
-  const [shareMessage, setShareMessage] = useState('')
 
   // Use admin uploaded coins
   const allCoins = coinsData
@@ -75,67 +73,8 @@ export default function HomePage() {
     const currentState = coinImageStates[coin.id] || 'front'
     return currentState === 'front' ? coin.frontImage : coin.backImage
   }
-
-  // Toggle favorite
-  const toggleFavorite = (coinId: number) => {
-    setFavorites(prev => {
-      const newFavorites = prev.includes(coinId)
-        ? prev.filter(id => id !== coinId)
-        : [...prev, coinId]
-      
-      // Save to localStorage
-      localStorage.setItem('favorites', JSON.stringify(newFavorites))
-      return newFavorites
-    })
-  }
-
-  // Share coin
-  const shareCoin = async (coin: any) => {
-    const coinUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/coins/${coin.id}`
-    
-    // Check if Web Share API is available (mobile)
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: coin.title,
-          text: `Check out this amazing coin: ${coin.title} - ${coin.description}`,
-          url: coinUrl,
-        })
-      } catch (error) {
-        // User cancelled sharing
-        console.log('Share cancelled')
-      }
-    } else {
-      // Fallback: Copy to clipboard
-      try {
-        await navigator.clipboard.writeText(coinUrl)
-        setShareMessage('Link copied to clipboard!')
-        setTimeout(() => setShareMessage(''), 3000)
-      } catch (error) {
-        setShareMessage('Failed to copy link')
-        setTimeout(() => setShareMessage(''), 3000)
-      }
-    }
-  }
-
-  // Load favorites from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedFavorites = localStorage.getItem('favorites')
-      if (savedFavorites) {
-        setFavorites(JSON.parse(savedFavorites))
-      }
-    }
-  }, [])
   return (
     <div className="min-h-screen dark:bg-gray-900 transition-colors duration-200">
-      {/* Share Message Toast */}
-      {shareMessage && (
-        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-pulse">
-          {shareMessage}
-        </div>
-      )}
-      
       {/* Hero Section */}
       <section className="relative min-h-screen sm:h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
@@ -320,24 +259,8 @@ export default function HomePage() {
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                       onError={handleImageError}
                     />
-                    <div className="absolute top-4 right-4 flex space-x-2">
-                      <button
-                        onClick={() => toggleFavorite(coin.id)}
-                        className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
-                        title={favorites.includes(coin.id) ? 'Remove from favorites' : 'Add to favorites'}
-                      >
-                        <Heart className={`w-4 h-4 ${favorites.includes(coin.id) ? 'fill-red-500 text-red-500' : 'text-red-500'}`} />
-                      </button>
-                      <button
-                        onClick={() => shareCoin(coin)}
-                        className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
-                        title="Share coin"
-                      >
-                        <Share2 className="w-4 h-4 text-purple-600" />
-                      </button>
-                      <div className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                        {formatPrice(coin.price)}
-                      </div>
+                    <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      {formatPrice(coin.price)}
                     </div>
                   </div>
 

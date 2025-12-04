@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Star, ArrowRight, Filter, Search, Heart, Share2 } from 'lucide-react'
+import { Star, ArrowRight, Filter, Search, Heart, Share2, RotateCcw } from 'lucide-react'
 import { useGlobal } from '@/contexts/GlobalContext'
 
 export default function CoinsPage() {
@@ -15,6 +15,7 @@ export default function CoinsPage() {
     year: string;
     description: string;
     frontImage: string;
+    backImage: string;
   }[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [priceRange, setPriceRange] = useState('')
@@ -22,6 +23,7 @@ export default function CoinsPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [favorites, setFavorites] = useState<number[]>([])
   const [shareMessage, setShareMessage] = useState('')
+  const [coinImageStates, setCoinImageStates] = useState<{[key: number]: 'front' | 'back'}>({})
 
   useEffect(() => {
     // Load coins data
@@ -41,7 +43,8 @@ export default function CoinsPage() {
               weight: "3.8g",
               year: "150 AD",
               description: "Rare silver denarius from Emperor Marcus Aurelius reign",
-              frontImage: "/assets/dummycoin.jpg"
+              frontImage: "/assets/dummycoin.jpg",
+              backImage: "/assets/dummycoin.jpg"
             },
             {
               id: 2,
@@ -50,7 +53,8 @@ export default function CoinsPage() {
               weight: "17.2g",
               year: "350 BC",
               description: "Classical Athenian silver coin with owl design",
-              frontImage: "/assets/dummycoin.jpg"
+              frontImage: "/assets/dummycoin.jpg",
+              backImage: "/assets/dummycoin.jpg"
             },
             {
               id: 3,
@@ -59,7 +63,8 @@ export default function CoinsPage() {
               weight: "3.5g",
               year: "1252 AD",
               description: "Florentine gold coin from Renaissance period",
-              frontImage: "/assets/dummycoin.jpg"
+              frontImage: "/assets/dummycoin.jpg",
+              backImage: "/assets/dummycoin.jpg"
             }
           ])
         }
@@ -146,6 +151,20 @@ export default function CoinsPage() {
       }
     }
   }, [])
+
+  // Toggle coin image between front and back
+  const toggleCoinImage = (coinId: number) => {
+    setCoinImageStates(prev => ({
+      ...prev,
+      [coinId]: prev[coinId] === 'front' ? 'back' : 'front'
+    }))
+  }
+
+  // Get current image for a coin
+  const getCurrentImage = (coin: any) => {
+    const currentState = coinImageStates[coin.id] || 'front'
+    return currentState === 'front' ? coin.frontImage : coin.backImage
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
@@ -341,10 +360,10 @@ export default function CoinsPage() {
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
               >
                 {/* Coin Image */}
-                <div className="relative h-48 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                <div className="relative h-48 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
                   <img
-                    src={coin.frontImage}
-                    alt={`${coin.title} - Front`}
+                    src={getCurrentImage(coin)}
+                    alt={`${coin.title} - ${coinImageStates[coin.id] === 'back' ? 'Back' : 'Front'}`}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                     onError={(e) => {
                       e.currentTarget.src = "/assets/dummycoin.jpg"
@@ -368,6 +387,16 @@ export default function CoinsPage() {
                     <div className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {formatPrice(coin.price)}
                     </div>
+                  </div>
+                  {/* Reverse Icon */}
+                  <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button 
+                      onClick={() => toggleCoinImage(coin.id)}
+                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                      title="Flip coin"
+                    >
+                      <RotateCcw className="w-4 h-4 text-purple-600" />
+                    </button>
                   </div>
                 </div>
 
