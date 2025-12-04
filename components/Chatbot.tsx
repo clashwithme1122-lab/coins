@@ -121,31 +121,31 @@ export default function Chatbot() {
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-        aria-label="Chat with us"
+        className="fixed bottom-4 right-4 z-50 bg-purple-600 hover:bg-purple-700 text-white p-3 sm:p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+        aria-label="Chat with Taksila AI Assistant"
       >
         {isOpen ? (
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
         )}
       </button>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 h-[500px] bg-white rounded-lg shadow-2xl flex flex-col border border-gray-200">
+        <div className="fixed bottom-20 right-4 left-4 sm:left-auto sm:right-6 sm:bottom-24 z-50 w-full sm:w-96 h-[70vh] sm:h-[500px] max-h-[600px] bg-white rounded-lg shadow-2xl flex flex-col border border-gray-200">
           {/* Header */}
-          <div className="bg-purple-600 text-white p-4 rounded-t-lg">
-            <h3 className="font-semibold">Coin Assistant</h3>
-            <p className="text-sm text-purple-100">Ask me about our coin collection</p>
+          <div className="bg-purple-600 text-white p-3 sm:p-4 rounded-t-lg flex-shrink-0">
+            <h3 className="font-semibold text-sm sm:text-base">Taksila AI Assistant</h3>
+            <p className="text-xs sm:text-sm text-purple-100">Ask me about coins, appraisals, grading</p>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3">
             {messages.length === 0 && (
-              <div className="text-center text-gray-500 py-8">
-                <MessageCircle className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                <p>Hello! I'm here to help you with questions about our coin collection, auctions, appraisals, and investment opportunities.</p>
+              <div className="text-center text-gray-500 py-6">
+                <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
+                <p className="text-xs sm:text-sm">Hello! I'm Taksila AI Assistant. I can help you with coins, artifacts, appraisal guidance, grading, and numismatics.</p>
               </div>
             )}
             
@@ -155,13 +155,13 @@ export default function Chatbot() {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
+                  className={`max-w-[85%] sm:max-w-[80%] p-2 sm:p-3 rounded-lg ${
                     message.sender === 'user'
                       ? 'bg-purple-600 text-white'
                       : 'bg-gray-100 text-gray-900'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  <p className="text-xs sm:text-sm whitespace-pre-wrap">{message.text}</p>
                   <p className={`text-xs mt-1 ${
                     message.sender === 'user' ? 'text-purple-200' : 'text-gray-500'
                   }`}>
@@ -173,8 +173,8 @@ export default function Chatbot() {
             
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  <Loader2 className="w-4 h-4 animate-spin text-gray-600" />
+                <div className="bg-gray-100 p-2 sm:p-3 rounded-lg">
+                  <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin text-gray-600" />
                 </div>
               </div>
             )}
@@ -183,7 +183,7 @@ export default function Chatbot() {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-3 sm:p-4 border-t border-gray-200 flex-shrink-0">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -191,16 +191,16 @@ export default function Chatbot() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about coins, auctions, appraisals..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-sm"
+                placeholder="Ask about coins, appraisals, grading..."
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-xs sm:text-sm"
                 disabled={isLoading}
               />
               <button
                 onClick={sendMessage}
                 disabled={isLoading || !inputValue.trim()}
-                className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-300 text-white p-2 rounded-lg transition-colors"
+                className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-300 text-white p-2 rounded-lg transition-colors flex-shrink-0"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             </div>
           </div>

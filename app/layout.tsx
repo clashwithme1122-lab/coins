@@ -46,10 +46,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="theme-color" content="#9333ea" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      </head>
       <body className={`${inter.className} antialiased`}>
         <GlobalProvider>
-          <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200" style={{ backgroundImage: 'url("/assets/home.webp")', backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-            <div className="backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 transition-colors duration-200">
+          <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+            <div className="flex-1 backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 transition-colors duration-200">
               <Navbar />
               <main className="flex-1">
                 {children}

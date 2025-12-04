@@ -139,13 +139,67 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors duration-200"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile menu button + Controls */}
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Currency Selector - Mobile */}
+            <div className="relative">
+              <button
+                onClick={() => setIsCurrencyMenuOpen(!isCurrencyMenuOpen)}
+                className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors duration-200 p-2 rounded-lg"
+              >
+                <DollarSign className="w-4 h-4" />
+                <span className="text-sm font-medium">{currency}</span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+              
+              <AnimatePresence>
+                {isCurrencyMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+                  >
+                    <button 
+                      onClick={() => {
+                        setCurrency('USD')
+                        setIsCurrencyMenuOpen(false)
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      USD ($)
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setCurrency('PKR')
+                        setIsCurrencyMenuOpen(false)
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      PKR (Rs)
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Theme Toggle - Mobile */}
+            <button
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              className="flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors duration-200 p-2 rounded-lg"
+              title="Toggle theme"
+            >
+              {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+            </button>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors duration-200"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
