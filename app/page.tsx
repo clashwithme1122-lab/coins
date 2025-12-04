@@ -1,45 +1,26 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Star, Shield, Clock, RotateCcw, Search } from 'lucide-react'
+import { ArrowRight, Star, Shield, Clock, RotateCcw, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { useGlobal } from '@/contexts/GlobalContext'
+import coinsData from '@/data/coins.json'
 
 export default function HomePage() {
   const { formatPrice, theme } = useGlobal()
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState<typeof dummyCoins>([])
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [currentCoinIndex, setCurrentCoinIndex] = useState(0)
+  const [coinImageStates, setCoinImageStates] = useState<{[key: number]: 'front' | 'back'}>({})
 
-  // Dummy coins data
-  const dummyCoins = [
-    {
-      id: 1,
-      title: "Ancient Roman Denarius",
-      price: 2450,
-      weight: "3.8g",
-      year: "150 AD",
-      description: "Rare silver denarius from Emperor Marcus Aurelius reign",
-      frontImage: "/assets/dummycoin.jpg"
-    },
-    {
-      id: 2,
-      title: "Greek Silver Tetradrachm",
-      price: 3200,
-      weight: "17.2g",
-      year: "350 BC",
-      description: "Classical Athenian silver coin with owl design",
-      frontImage: "/assets/dummycoin.jpg"
-    },
-    {
-      id: 3,
-      title: "Medieval Gold Florin",
-      price: 5800,
-      weight: "3.5g",
-      year: "1252 AD",
-      description: "Florentine gold coin from Renaissance period",
-      frontImage: "/assets/dummycoin.jpg"
-    }
-  ]
+  // Use admin uploaded coins
+  const allCoins = coinsData
+  
+  // Convert price strings to numbers for formatting
+  const processedCoins = allCoins.map(coin => ({
+    ...coin,
+    price: typeof coin.price === 'string' ? parseInt(coin.price.replace(/[$,]/g, '')) : coin.price
+  }))
 
   // Search functionality
   const handleSearch = (query: string) => {
@@ -47,12 +28,50 @@ export default function HomePage() {
     if (query.trim() === '') {
       setSearchResults([])
     } else {
-      const results = dummyCoins.filter(coin => 
+      const results = processedCoins.filter(coin => 
         coin.title.toLowerCase().includes(query.toLowerCase()) ||
         coin.description.toLowerCase().includes(query.toLowerCase())
       )
       setSearchResults(results)
     }
+  }
+
+  // Carousel navigation
+  const handleNext = () => {
+    setCurrentCoinIndex((prev) => (prev + 1) % processedCoins.length)
+  }
+
+  const handlePrev = () => {
+    setCurrentCoinIndex((prev) => (prev - 1 + processedCoins.length) % processedCoins.length)
+  }
+
+  // Get 3 coins to display (current, next, next-next)
+  const getDisplayedCoins = () => {
+    const displayed = []
+    for (let i = 0; i < 3; i++) {
+      const index = (currentCoinIndex + i) % processedCoins.length
+      displayed.push(processedCoins[index])
+    }
+    return displayed
+  }
+
+  // Handle image errors with fallback
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/dummycoin.jpg"
+  }
+
+  // Toggle coin image between front and back
+  const toggleCoinImage = (coinId: number) => {
+    setCoinImageStates(prev => ({
+      ...prev,
+      [coinId]: prev[coinId] === 'front' ? 'back' : 'front'
+    }))
+  }
+
+  // Get current image for a coin
+  const getCurrentImage = (coin: any) => {
+    const currentState = coinImageStates[coin.id] || 'front'
+    return currentState === 'front' ? coin.frontImage : coin.backImage
   }
   return (
     <div className="min-h-screen dark:bg-gray-900 transition-colors duration-200">
@@ -106,7 +125,7 @@ export default function HomePage() {
                   }`}>
                     Found {searchResults.length} coins
                   </p>
-                  {searchResults.map((coin) => (
+                  {searchResults.map((coin: any) => (
                     <Link 
                       key={coin.id}
                       href={`/coin/${coin.id}`}
@@ -117,6 +136,7 @@ export default function HomePage() {
                           src={coin.frontImage} 
                           alt={coin.title}
                           className="w-12 h-12 object-cover rounded-lg"
+                          onError={handleImageError}
                         />
                         <div className="flex-1">
                           <h4 className={`font-medium ${
@@ -197,47 +217,97 @@ export default function HomePage() {
             <p className="text-xl text-gray-600 dark:text-gray-300">Discover our most prized numismatic treasures</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {dummyCoins.map((coin) => (
-              <div key={coin.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
-                {/* Coin Image */}
-                <div className="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
-                  {/* Reverse Icon */}
-                  <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors">
-                      <RotateCcw className="w-4 h-4 text-purple-600" />
-                    </button>
+          {/* Carousel Container */}
+          <div className="relative">
+            {/* Navigation Buttons */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 -ml-6"
+              aria-label="Previous coins"
+            >
+              <ChevronLeft className="w-6 h-6 text-purple-600" />
+            </button>
+            
+            <button
+              onClick={handleNext}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 -mr-6"
+              aria-label="Next coins"
+            >
+              <ChevronRight className="w-6 h-6 text-purple-600" />
+            </button>
+
+            {/* Coins Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-12">
+              {getDisplayedCoins().map((coin) => (
+                <div key={coin.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                  {/* Coin Image */}
+                  <div className="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
+                    {/* Reverse Icon */}
+                    <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <button 
+                        onClick={() => toggleCoinImage(coin.id)}
+                        className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                        title="Flip coin"
+                      >
+                        <RotateCcw className="w-4 h-4 text-purple-600" />
+                      </button>
+                    </div>
+                    
+                    <img
+                      src={getCurrentImage(coin)}
+                      alt={`${coin.title} - ${coinImageStates[coin.id] === 'back' ? 'Back' : 'Front'}`}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      onError={handleImageError}
+                    />
+                    <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      {formatPrice(coin.price)}
+                    </div>
                   </div>
-                  
-                  <img
-                    src={coin.frontImage}
-                    alt={`${coin.title} - Front`}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    {formatPrice(coin.price)}
+
+                  {/* Coin Details */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{coin.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{coin.description}</p>
+                    
+                    <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                      <span>Year: {coin.year}</span>
+                      <span>Weight: {coin.weight}</span>
+                    </div>
+
+                    {coin.historicalValue && (
+                      <div className="mb-4 p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                        <p className="text-xs text-purple-700 dark:text-purple-300 font-medium">
+                          {coin.historicalValue}
+                        </p>
+                      </div>
+                    )}
+
+                    <Link 
+                      href={`/coins/${coin.id}`}
+                      className="block w-full bg-purple-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200"
+                    >
+                      View Details
+                    </Link>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Coin Details */}
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{coin.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{coin.description}</p>
-                  
-                  <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    <span>Year: {coin.year}</span>
-                    <span>Weight: {coin.weight}</span>
-                  </div>
-
-                  <Link 
-                    href={`/coins/${coin.id}`}
-                    className="block w-full bg-purple-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            ))}
+            {/* Carousel Indicators */}
+            <div className="flex justify-center mt-8 space-x-2">
+              {processedCoins.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentCoinIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                    index === currentCoinIndex
+                      ? 'bg-purple-600 w-8'
+                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to coin ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
