@@ -222,34 +222,34 @@ export default function HomePage() {
             {/* Navigation Buttons */}
             <button
               onClick={handlePrev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 -ml-6"
+              className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 sm:-ml-6"
               aria-label="Previous coins"
             >
-              <ChevronLeft className="w-6 h-6 text-purple-600" />
+              <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600" />
             </button>
             
             <button
               onClick={handleNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 -mr-6"
+              className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 sm:-mr-6"
               aria-label="Next coins"
             >
-              <ChevronRight className="w-6 h-6 text-purple-600" />
+              <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600" />
             </button>
 
             {/* Coins Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mx-4 sm:mx-8 lg:mx-12">
               {getDisplayedCoins().map((coin) => (
                 <div key={coin.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                   {/* Coin Image */}
-                  <div className="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
+                  <div className="relative h-48 sm:h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
                     {/* Reverse Icon */}
                     <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button 
                         onClick={() => toggleCoinImage(coin.id)}
-                        className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                        className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-white transition-colors"
                         title="Flip coin"
                       >
-                        <RotateCcw className="w-4 h-4 text-purple-600" />
+                        <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
                       </button>
                     </div>
                     
@@ -259,17 +259,17 @@ export default function HomePage() {
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                       onError={handleImageError}
                     />
-                    <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-purple-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
                       {formatPrice(coin.price)}
                     </div>
                   </div>
 
                   {/* Coin Details */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{coin.title}</h3>
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">{coin.title}</h3>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{coin.description}</p>
                     
-                    <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <div className="flex justify-between items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4">
                       <span>Year: {coin.year}</span>
                       <span>Weight: {coin.weight}</span>
                     </div>
@@ -284,7 +284,7 @@ export default function HomePage() {
 
                     <Link 
                       href={`/coins/${coin.id}`}
-                      className="block w-full bg-purple-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200"
+                      className="block w-full bg-purple-600 text-white text-center py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200 text-sm sm:text-base"
                     >
                       View Details
                     </Link>

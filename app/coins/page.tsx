@@ -353,14 +353,14 @@ export default function CoinsPage() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
             {filteredCoins.map((coin, index) => (
               <div
                 key={coin.id}
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
               >
                 {/* Coin Image */}
-                <div className="relative h-48 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
+                <div className="relative h-40 sm:h-48 bg-gray-100 dark:bg-gray-700 overflow-hidden group">
                   <img
                     src={getCurrentImage(coin)}
                     alt={`${coin.title} - ${coinImageStates[coin.id] === 'back' ? 'Back' : 'Front'}`}
@@ -369,43 +369,42 @@ export default function CoinsPage() {
                       e.currentTarget.src = "/assets/dummycoin.jpg"
                     }}
                   />
-                  <div className="absolute top-4 right-4 flex space-x-2">
+                  <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
                     <button
                       onClick={() => toggleFavorite(coin.id)}
-                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-white transition-colors"
                       title={favorites.includes(coin.id) ? 'Remove from favorites' : 'Add to favorites'}
                     >
-                      <Heart className={`w-4 h-4 ${favorites.includes(coin.id) ? 'fill-red-500 text-red-500' : 'text-red-500'}`} />
+                      <Heart className={`w-3 h-3 sm:w-4 sm:h-4 ${favorites.includes(coin.id) ? 'fill-red-500 text-red-500' : 'text-red-500'}`} />
                     </button>
                     <button
                       onClick={() => shareCoin(coin)}
-                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-white transition-colors"
                       title="Share coin"
                     >
-                      <Share2 className="w-4 h-4 text-purple-600" />
+                      <Share2 className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
                     </button>
-                    <div className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="bg-purple-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
                       {formatPrice(coin.price)}
                     </div>
                   </div>
-                  {/* Reverse Icon */}
                   <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <button 
                       onClick={() => toggleCoinImage(coin.id)}
-                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-white transition-colors"
                       title="Flip coin"
                     >
-                      <RotateCcw className="w-4 h-4 text-purple-600" />
+                      <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
                     </button>
                   </div>
                 </div>
 
                 {/* Coin Details */}
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{coin.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">{coin.description}</p>
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-900 dark:text-white line-clamp-2">{coin.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-4 line-clamp-2">{coin.description}</p>
                   
-                  <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <div className="flex justify-between items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4">
                     <span>{coin.year}</span>
                     <span>{coin.weight}</span>
                   </div>
@@ -413,12 +412,12 @@ export default function CoinsPage() {
                   <div className="flex space-x-3">
                     <Link 
                       href={`/coins/${coin.id}`}
-                      className="flex-1 bg-purple-600 text-white text-center py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 text-sm"
+                      className="flex-1 bg-purple-600 text-white text-center py-2 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors duration-200 text-xs sm:text-sm"
                     >
                       View Details
                     </Link>
-                    <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                      <Star className="w-4 h-4 text-gray-400" />
+                    <button className="px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
                     </button>
                   </div>
                 </div>
