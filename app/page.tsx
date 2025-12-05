@@ -128,7 +128,7 @@ export default function HomePage() {
                   {searchResults.map((coin: any) => (
                     <Link 
                       key={coin.id}
-                      href={`/coin/${coin.id}`}
+                      href={`/coins/${coin.id}`}
                       className={`block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors`}
                     >
                       <div className="flex items-center space-x-3">

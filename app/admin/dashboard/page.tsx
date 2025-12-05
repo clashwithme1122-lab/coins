@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Plus, Edit2, Trash2, Save, X, LogOut, Coins, Eye, Check, XCircle, RotateCcw } from 'lucide-react'
+import { Plus, Edit2, Trash2, Save, X, LogOut, Coins, Eye, Check, XCircle, RotateCcw, Gavel, Clock, TrendingUp, Users } from 'lucide-react'
 import { useGlobal } from '@/contexts/GlobalContext'
 import { useToast } from '@/contexts/ToastContext'
 
@@ -58,6 +58,37 @@ interface AppraisalRequest {
   status: 'pending' | 'approved' | 'rejected'
 }
 
+interface AuctionItem {
+  id: number
+  title: string
+  description: string
+  shortDesc: string
+  currentBid: number
+  startingBid: number
+  buyNowPrice?: number
+  bidCount: number
+  timeLeft: string
+  endTime: Date
+  image: string
+  images: string[]
+  category: string
+  grade: string
+  certification: string
+  weight: string
+  diameter: string
+  composition: string
+  mint: string
+  year: string
+  seller: string
+  sellerVerified: boolean
+  bids: Array<{
+    id: number
+    amount: number
+    bidder: string
+    timestamp: Date
+  }>
+}
+
 export default function AdminDashboardPage() {
   const { theme } = useGlobal()
   const { showSuccess, showError, showWarning, showInfo } = useToast()
@@ -65,8 +96,9 @@ export default function AdminDashboardPage() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingCoin, setEditingCoin] = useState<Coin | null>(null)
   const [userSubmissions, setUserSubmissions] = useState<UserSubmission[]>([])
-  const [activeTab, setActiveTab] = useState<'coins' | 'submissions' | 'appraisals'>('coins')
+  const [activeTab, setActiveTab] = useState<'coins' | 'submissions' | 'appraisals' | 'auctions'>('coins')
   const [appraisals, setAppraisals] = useState<AppraisalRequest[]>([])
+  const [auctions, setAuctions] = useState<AuctionItem[]>([])
   const [selectedSubmission, setSelectedSubmission] = useState<UserSubmission | null>(null)
   const [selectedAppraisal, setSelectedAppraisal] = useState<AppraisalRequest | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
@@ -94,6 +126,7 @@ export default function AdminDashboardPage() {
       loadCoins()
       loadUserSubmissions()
       loadAppraisals()
+      loadAuctions()
     }
   }, [router])
 
@@ -174,6 +207,20 @@ export default function AdminDashboardPage() {
     } catch (error) {
       console.error('Error loading appraisals:', error)
       setAppraisals([])
+    }
+  }
+
+  const loadAuctions = async () => {
+    try {
+      const response = await fetch('/api/auctions')
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success) {
+          setAuctions(result.data)
+        }
+      }
+    } catch (error) {
+      console.error('Error loading auctions:', error)
     }
   }
 
@@ -465,6 +512,16 @@ export default function AdminDashboardPage() {
                 }`}
               >
                 Appraisals ({appraisals.filter(a => a.status === 'pending').length} pending)
+              </button>
+              <button
+                onClick={() => setActiveTab('auctions')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'auctions'
+                    ? 'border-purple-600 text-purple-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Auctions ({auctions.length} active)
               </button>
             </nav>
           </div>
@@ -1062,6 +1119,169 @@ export default function AdminDashboardPage() {
               </div>
             )}
           </div>
+        )}
+
+        {/* Auctions Tab Content */}
+        {activeTab === 'auctions' && (
+          <>
+            {/* Add Auction Button */}
+            <div className="mb-8">
+              <a
+                href="/auction/add"
+                className="inline-flex items-center space-x-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                <Plus className="w-5 h-5" />
+                <span>Add New Auction</span>
+              </a>
+            </div>
+
+            {/* Auctions Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <Gavel className="w-8 h-8 text-purple-600 mr-3" />
+                  <div>
+                    <p className="text-sm text-gray-500">Active Auctions</p>
+                    <p className="text-2xl font-bold text-gray-900">{auctions.length}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <TrendingUp className="w-8 h-8 text-green-600 mr-3" />
+                  <div>
+                    <p className="text-sm text-gray-500">Total Value</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      ${auctions.reduce((sum, item) => sum + item.currentBid, 0).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <Users className="w-8 h-8 text-blue-600 mr-3" />
+                  <div>
+                    <p className="text-sm text-gray-500">Total Bids</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {auctions.reduce((sum, item) => sum + item.bidCount, 0)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                  <Clock className="w-8 h-8 text-orange-600 mr-3" />
+                  <div>
+                    <p className="text-sm text-gray-500">Ending Soon</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {auctions.filter(item => {
+                        const timeLeft = new Date(item.endTime).getTime() - new Date().getTime();
+                        return timeLeft < 24 * 60 * 60 * 1000;
+                      }).length}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Auctions List */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-semibold">Active Auctions ({auctions.length})</h2>
+              </div>
+
+              {auctions.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Gavel className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 mb-4">No active auctions</p>
+                  <a
+                    href="/auction/add"
+                    className="text-purple-600 hover:text-purple-700 font-medium"
+                  >
+                    Create your first auction →
+                  </a>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Auction Item
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Current Bid
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Bids
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Time Left
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {auctions.map((auction) => (
+                        <tr key={auction.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center">
+                              <img
+                                src={auction.image}
+                                alt={auction.title}
+                                className="w-12 h-12 object-cover rounded-lg mr-3"
+                              />
+                              <div>
+                                <div className="text-sm font-medium text-gray-900">{auction.title}</div>
+                                <div className="text-sm text-gray-500">{auction.year} • {auction.category}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                            ${auction.currentBid.toLocaleString()}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900">{auction.bidCount}</td>
+                          <td className="px-6 py-4 text-sm text-gray-900">{auction.timeLeft}</td>
+                          <td className="px-6 py-4">
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                              Active
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex space-x-2">
+                              <a
+                                href={`/auction/${auction.id}`}
+                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                title="View Details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </a>
+                              <button
+                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="End Auction"
+                                onClick={() => {
+                                  if (confirm('Are you sure you want to end this auction?')) {
+                                    showWarning('Auction ended functionality coming soon!', 4000)
+                                  }
+                                }}
+                              >
+                                <XCircle className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

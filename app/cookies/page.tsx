@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy - CryptoCoin',
-  description: 'CryptoCoin Cookie Policy. Learn how we use cookies and similar technologies on our cryptocurrency trading platform.',
+  title: 'Cookie Policy - Taksila Coins',
+  description: 'Taksila Coins Cookie Policy. Learn how we use cookies and similar technologies on our coin collecting website.',
 }
 
-export default function CookiesPage() {
+export default function CookiePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -14,7 +14,7 @@ export default function CookiesPage() {
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">Cookie Policy</h1>
             <p className="text-xl text-purple-100 mb-8">
-              Last updated: November 1, 2024
+              Last updated: December 2, 2025
             </p>
           </div>
         </div>
@@ -22,227 +22,171 @@ export default function CookiesPage() {
 
       {/* Cookie Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="crypto-card">
+        <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="prose prose-lg max-w-none">
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold mb-4">Introduction</h2>
+              <p className="text-gray-600 mb-4">
+                At Taksila Coins, we use cookies and similar technologies to enhance your experience on our 
+                numismatic platform. This Cookie Policy explains what cookies are, how we use them, and your 
+                choices regarding their use.
+              </p>
+            </section>
+
             <section className="mb-8">
               <h2 className="text-2xl font-bold mb-4">What Are Cookies?</h2>
               <p className="text-gray-600 mb-4">
-                Cookies are small text files that are stored on your device (computer, tablet, or mobile) when 
-                you visit a website. They allow the website to remember your actions and preferences over time.
+                Cookies are small text files that are stored on your device (computer, smartphone, tablet) when 
+                you visit our website. They help us enhance your experience by remembering your preferences and 
+                providing personalized content.
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold mb-4">How We Use Cookies</h2>
-              <p className="text-gray-600 mb-4">
-                CryptoCoin uses cookies and similar technologies to enhance your experience, analyze traffic, 
-                and provide personalized services. Here's how we use different types of cookies:
-              </p>
-            </section>
-
-            {/* Cookie Categories */}
-            <section className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Types of Cookies We Use</h2>
+              <p className="text-gray-600 mb-4">At Taksila Coins, we use cookies for various purposes:</p>
               
-              <div className="space-y-6">
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-2">Essential Cookies</h3>
-                  <p className="text-gray-600 mb-2">
-                    These cookies are necessary for the website to function and cannot be switched off in our systems.
-                  </p>
-                  <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
-                    <li>Maintain user sessions</li>
-                    <li>Manage security tokens</li>
-                    <li>Enable trading functionality</li>
-                    <li>Remember your preferences</li>
-                  </ul>
-                </div>
+              <h3 className="text-xl font-semibold mb-3 mt-6">Essential Cookies</h3>
+              <p className="text-gray-600 mb-4">These cookies are necessary for the website to function properly:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li>Maintaining your shopping cart and wishlist</li>
+                <li>Keeping you logged into your account</li>
+                <li>Processing secure transactions and payments</li>
+                <li>Managing auction bids and watchlists</li>
+                <li>Ensuring website security and preventing fraud</li>
+              </ul>
 
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-2">Performance Cookies</h3>
-                  <p className="text-gray-600 mb-2">
-                    These cookies help us understand how visitors interact with our website by collecting and reporting information.
-                  </p>
-                  <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
-                    <li>Track website performance</li>
-                    <li>Monitor traffic patterns</li>
-                    <li>Identify technical issues</li>
-                    <li>Optimize user experience</li>
-                  </ul>
-                </div>
+              <h3 className="text-xl font-semibold mb-3 mt-6">Performance Cookies</h3>
+              <p className="text-gray-600 mb-4">These cookies help us understand how our website is performing:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li>Tracking website traffic and visitor behavior</li>
+                <li>Measuring page load times and performance</li>
+                <li>Identifying popular coin categories and listings</li>
+                <li>Detecting and fixing technical issues</li>
+              </ul>
 
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-2">Functional Cookies</h3>
-                  <p className="text-gray-600 mb-2">
-                    These cookies enable enhanced functionality and personalization, such as videos and live chats.
-                  </p>
-                  <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
-                    <li>Remember your login details</li>
-                    <li>Save trading preferences</li>
-                    <li>Customize dashboard layout</li>
-                    <li>Enable social media features</li>
-                  </ul>
-                </div>
+              <h3 className="text-xl font-semibold mb-3 mt-6">Functional Cookies</h3>
+              <p className="text-gray-600 mb-4">These cookies enhance your experience by remembering your preferences:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li>Remembering your currency preference (USD/PKR)</li>
+                <li>Saving your search filters and browsing history</li>
+                <li>Displaying personalized coin recommendations</li>
+                <li>Remembering your language and display settings</li>
+                <li>Customizing your dashboard and portfolio view</li>
+              </ul>
 
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-2">Targeting Cookies</h3>
-                  <p className="text-gray-600 mb-2">
-                    These cookies are used to deliver advertisements that are relevant to you and your interests.
-                  </p>
-                  <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
-                    <li>Personalize marketing content</li>
-                    <li>Track ad campaign effectiveness</li>
-                    <li>Limit ad frequency</li>
-                    <li>Measure conversion rates</li>
-                  </ul>
-                </div>
-              </div>
+              <h3 className="text-xl font-semibold mb-3 mt-6">Marketing Cookies</h3>
+              <p className="text-gray-600 mb-4">These cookies help us provide relevant marketing content:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li>Showing personalized coin recommendations</li>
+                <li>Displaying relevant advertisements</li>
+                <li>Tracking marketing campaign effectiveness</li>
+                <li>Retargeting visitors who showed interest in specific coins</li>
+              </ul>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold mb-4">Third-Party Cookies</h2>
-              <p className="text-gray-600 mb-4">
-                We use various third-party services that may set cookies on your device:
-              </p>
-              
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Analytics Services</h3>
-                  <p className="text-sm text-gray-600 mb-2">Google Analytics, Mixpanel</p>
-                  <p className="text-sm text-gray-600">Used to analyze website traffic and user behavior</p>
-                </div>
-                
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Payment Processors</h3>
-                  <p className="text-sm text-gray-600 mb-2">Stripe, PayPal</p>
-                  <p className="text-sm text-gray-600">Required for processing payments and transactions</p>
-                </div>
-                
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Marketing Platforms</h3>
-                  <p className="text-sm text-gray-600 mb-2">Facebook Pixel, Google Ads</p>
-                  <p className="text-sm text-gray-600">Used for advertising and remarketing purposes</p>
-                </div>
-                
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Social Media</h3>
-                  <p className="text-sm text-gray-600 mb-2">Twitter, LinkedIn</p>
-                  <p className="text-sm text-gray-600">Enable social media integration and sharing</p>
-                </div>
-              </div>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Managing Your Cookie Preferences</h2>
-              <p className="text-gray-600 mb-4">
-                You have several options to manage cookies:
-              </p>
-              
-              <div className="space-y-4">
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="font-semibold mb-2">Cookie Consent Banner</h3>
-                  <p className="text-sm text-gray-600">
-                    When you first visit our website, you'll see a cookie consent banner where you can 
-                    accept or reject non-essential cookies.
-                  </p>
-                </div>
-                
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="font-semibold mb-2">Browser Settings</h3>
-                  <p className="text-sm text-gray-600">
-                    You can configure your browser to refuse cookies or to alert you when cookies are being sent. 
-                    However, this may affect your ability to use certain features of our Service.
-                  </p>
-                </div>
-                
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="font-semibold mb-2">Cookie Preferences Center</h3>
-                  <p className="text-sm text-gray-600">
-                    You can access our Cookie Preferences Center at any time to update your cookie settings.
-                  </p>
-                </div>
-              </div>
+              <p className="text-gray-600 mb-4">We use third-party services that may place cookies on your device:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li><strong>Payment Processors:</strong> Secure payment processing (Stripe, PayPal)</li>
+                <li><strong>Analytics Services:</strong> Website performance tracking (Google Analytics)</li>
+                <li><strong>Advertising Networks:</strong> Relevant ad display (Google Ads)</li>
+                <li><strong>Social Media:</strong> Social sharing and authentication</li>
+                <li><strong>Customer Support:</strong> Live chat and support services</li>
+              </ul>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold mb-4">Cookie Duration</h2>
-              <p className="text-gray-600 mb-4">
-                Cookies have different lifespans depending on their purpose:
-              </p>
-              
+              <p className="text-gray-600 mb-4">Cookies have different lifespans:</p>
               <ul className="list-disc pl-6 space-y-2 text-gray-600">
                 <li><strong>Session Cookies:</strong> Deleted when you close your browser</li>
-                <li><strong>Persistent Cookies:</strong> Remain on your device for a set period or until you delete them</li>
-                <li><strong>Authentication Cookies:</strong> Typically last 30 days for security purposes</li>
-                <li><strong>Analytics Cookies:</strong> Usually expire after 2 years</li>
-                <li><strong>Marketing Cookies:</strong> Vary by provider, typically 90 days to 2 years</li>
+                <li><strong>Persistent Cookies:</strong> Remain on your device for a set period</li>
+                <li><strong>Authentication Cookies:</strong> Typically last 30 days</li>
+                <li><strong>Preference Cookies:</strong> Usually last 6-12 months</li>
+                <li><strong>Analytics Cookies:</strong> Typically last 2 years</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Your Rights</h2>
+              <h2 className="text-2xl font-bold mb-4">Managing Your Cookie Preferences</h2>
+              <p className="text-gray-600 mb-4">You can control cookies in several ways:</p>
+              
+              <h3 className="text-xl font-semibold mb-3 mt-6">Browser Settings</h3>
+              <p className="text-gray-600 mb-4">Most browsers allow you to:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li>Block all cookies</li>
+                <li>Accept only first-party cookies</li>
+                <li>Delete existing cookies</li>
+                <li>Set notifications when cookies are placed</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold mb-3 mt-6">Our Cookie Consent Tool</h3>
               <p className="text-gray-600 mb-4">
-                Depending on your location, you may have the right to:
+                When you first visit our website, you'll see a cookie consent banner where you can:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                <li>Accept or reject non-essential cookies</li>
-                <li>Withdraw consent at any time</li>
-                <li>View what cookies are stored on your device</li>
-                <li>Delete cookies from your browser</li>
-                <li>Opt out of targeted advertising</li>
+                <li>Accept all cookies</li>
+                <li>Reject non-essential cookies</li>
+                <li>Customize your cookie preferences</li>
+                <li>Change preferences at any time</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Updates to This Policy</h2>
+              <h2 className="text-2xl font-bold mb-4">Impact of Disabling Cookies</h2>
+              <p className="text-gray-600 mb-4">If you choose to disable cookies:</p>
+              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                <li>Some website features may not work properly</li>
+                <li>Your shopping cart and preferences may not be saved</li>
+                <li>You may need to log in more frequently</li>
+                <li>Personalized recommendations may be limited</li>
+                <li>Some third-party services may not function</li>
+              </ul>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold mb-4">Cookie Policy Updates</h2>
               <p className="text-gray-600 mb-4">
                 We may update this Cookie Policy from time to time to reflect changes in our practices or 
-                applicable law. We will notify you of any changes by posting the updated policy on this page.
+                applicable law. We will notify you of any changes by updating the "Last updated" date.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+              <h2 className="text-2xl font-bold mb-4">Contact Information</h2>
               <p className="text-gray-600 mb-4">
-                If you have any questions about this Cookie Policy, please contact us at:
+                If you have any questions about our use of cookies, please contact us at:
               </p>
               <div className="bg-gray-100 p-4 rounded-lg">
                 <p className="text-gray-700">
-                  Email: privacy@cryptocoin.com<br />
-                  Address: 123 Crypto Street, San Francisco, CA 94105<br />
-                  Phone: +1 (555) 123-4567
+                  Email: mtalhakh24@gmail.com<br />
+                  Address: Pakistan<br />
+                  Phone: +92 321 5060069
                 </p>
               </div>
             </section>
           </div>
         </div>
 
-        {/* Cookie Management */}
-        <div className="mt-8 crypto-card">
-          <h3 className="text-xl font-semibold mb-4">Manage Your Preferences</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button className="border border-purple-600 text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
-              Review Cookie Settings
-            </button>
-            <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
-              Clear All Cookies
-            </button>
-          </div>
-        </div>
-
         {/* Quick Links */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <a href="/privacy" className="crypto-card text-center hover:shadow-lg transition-shadow">
-            <h3 className="font-semibold mb-2">Privacy Policy</h3>
-            <p className="text-sm text-gray-600">Learn about data protection</p>
-          </a>
-          <a href="/terms" className="crypto-card text-center hover:shadow-lg transition-shadow">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <a href="/terms" className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
             <h3 className="font-semibold mb-2">Terms of Service</h3>
             <p className="text-sm text-gray-600">Read our terms and conditions</p>
           </a>
-          <a href="/disclaimer" className="crypto-card text-center hover:shadow-lg transition-shadow">
+          <a href="/privacy" className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+            <h3 className="font-semibold mb-2">Privacy Policy</h3>
+            <p className="text-sm text-gray-600">Learn how we protect your data</p>
+          </a>
+          <a href="/disclaimer" className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
             <h3 className="font-semibold mb-2">Disclaimer</h3>
             <p className="text-sm text-gray-600">Important legal information</p>
+          </a>
+          <a href="/shipping" className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+            <h3 className="font-semibold mb-2">Shipping Policy</h3>
+            <p className="text-sm text-gray-600">Shipping and delivery information</p>
           </a>
         </div>
       </div>

@@ -19,7 +19,7 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 
 const EXCHANGE_RATES = {
   USD: 1,
-  PKR: 280, // 1 USD = 280 PKR (example rate)
+  PKR: 283.14, // 1 USD = 283.14 PKR (current rate)
 }
 
 export function GlobalProvider({ children }: { children: ReactNode }) {

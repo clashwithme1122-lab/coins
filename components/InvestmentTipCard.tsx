@@ -18,6 +18,7 @@ interface InvestmentTipCardProps {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   readTime: number;
   keyTakeaways: string[];
+  url?: string;
   delay?: number;
 }
 
@@ -29,6 +30,7 @@ export default function InvestmentTipCard({
   difficulty,
   readTime,
   keyTakeaways,
+  url,
   delay = 0
 }: InvestmentTipCardProps) {
   const IconComponent = iconMap[icon as keyof typeof iconMap] || Target;
@@ -124,7 +126,10 @@ export default function InvestmentTipCard({
 
         {/* CTA */}
         <div className="flex items-center justify-between">
-          <button className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium text-sm group-hover:space-x-3 transition-all duration-200">
+          <button 
+            onClick={() => url && window.open(url, '_blank')}
+            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium text-sm group-hover:space-x-3 transition-all duration-200"
+          >
             <span>Read More</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
           </button>

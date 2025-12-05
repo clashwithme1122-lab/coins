@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
-import { Users, Target, Shield, Globe, Award, Zap } from 'lucide-react'
+import Link from 'next/link'
+import { Users, Target, Shield, Globe, Award, Zap, MapPin, Calendar, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'About Us - Taksila Coins',
-  description: 'Learn about Taksila Coins - the premier antique and valuable coin marketplace connecting collectors with historical treasures.',
+  description: 'Learn about Taksila Coins - Pakistan\'s premier coin marketplace connecting collectors with authentic historical and modern coins.',
 }
 
 export default function AboutPage() {
@@ -15,7 +16,7 @@ export default function AboutPage() {
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">About Taksila Coins</h1>
             <p className="text-xl text-purple-100 mb-8">
-              Connecting collectors with the world's finest antique and historical coins since 1985
+              Connecting collectors with Pakistan's finest historical and modern coins since 2025
             </p>
           </div>
         </div>
@@ -26,16 +27,16 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            To preserve and share numismatic history by providing collectors with authentic, 
-            professionally graded coins while fostering a global community of passionate enthusiasts.
+            To preserve and share Pakistan's rich numismatic heritage by providing collectors with authentic, 
+            professionally graded coins while fostering a community of passionate enthusiasts across South Asia and beyond.
           </p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           {[
-            { icon: Users, label: 'Active Collectors', value: '50K+', description: 'Worldwide community' },
-            { icon: Globe, label: 'Countries', value: '75+', description: 'Global shipping' },
+            { icon: Users, label: 'Active Collectors', value: '1K+', description: 'Growing community' },
+            { icon: Globe, label: 'Countries', value: '15+', description: 'Regional shipping' },
             { icon: Shield, label: 'Authenticity', value: '100%', description: 'Guaranteed genuine' },
             { icon: Award, label: 'Expert Rating', value: '4.9/5', description: 'Customer satisfaction' },
           ].map((stat, index) => (
@@ -50,149 +51,192 @@ export default function AboutPage() {
           ))}
         </div>
 
-        {/* Story */}
+        {/* Our Story */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-4">Our Story</h2>
-              <p className="text-gray-600 mb-4">
-                Founded in 1985 by renowned numismatist Dr. James Harrington, Taksila Coins began as a small family-run shop 
-                specializing in ancient Roman and Greek coins. What started as a passion for preserving history has grown into 
-                one of the world's most trusted coin marketplaces.
-              </p>
-              <p className="text-gray-600 mb-4">
-                Over the past four decades, we've helped over 50,000 collectors build their dream collections, from beginners 
-                seeking their first ancient coin to seasoned investors acquiring rare treasures. Our commitment to authenticity, 
-                professional grading, and expert customer service has made us the go-to destination for serious collectors.
-              </p>
-              <p className="text-gray-600">
-                Today, Taksila Coins stands at the intersection of tradition and technology, combining decades of numismatic 
-                expertise with modern marketplace features to bring the world of coin collecting to enthusiasts everywhere.
-              </p>
-            </div>
-            <div className="bg-purple-50 rounded-lg h-96 flex items-center justify-center">
-              <div className="text-center">
-                <Award className="w-16 h-16 text-purple-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800">38 Years of Excellence</h3>
-                <p className="text-gray-600 mt-2">Trusted by collectors worldwide</p>
-              </div>
-            </div>
+          <h2 className="text-3xl font-bold mb-6">Our Story</h2>
+          <p className="text-gray-600 mb-4">
+            Founded in December 2025, Taksila Coins emerged from a deep passion for preserving Pakistan's 
+            numismatic heritage. Named after the ancient city of Taxila, a historic center of learning and 
+            trade where coins were first minted in the region thousands of years ago, our mission is to connect 
+            collectors with authentic pieces of history.
+          </p>
+          <p className="text-gray-600 mb-4">
+            What began as a personal collection of rare Pakistani coins has evolved into a trusted marketplace 
+            serving collectors across Pakistan and neighboring countries. We specialize in coins from the 
+            Mughal Empire, British India period, and modern Pakistan, alongside carefully selected international 
+            numismatic treasures.
+          </p>
+          <p className="text-gray-600">
+            Today, Taksila Coins combines traditional numismatic expertise with modern technology, making it 
+            easier than ever for collectors to discover, authenticate, and acquire historical coins while 
+            building a vibrant community of enthusiasts passionate about preserving our monetary heritage.
+          </p>
+          <div className="mt-6 flex items-center text-purple-600">
+            <Calendar className="w-5 h-5 mr-2" />
+            <span className="font-semibold">Founded December 2, 2025 - Pakistan's Premier Coin Marketplace</span>
           </div>
         </div>
 
-        {/* Values */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Our Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: 'Authenticity Guaranteed',
-                description: 'Every coin we sell is professionally authenticated and graded by expert numismatists with full money-back guarantees.'
-              },
-              {
-                icon: Zap,
-                title: 'Expert Knowledge',
-                description: 'Our team of certified numismatists brings decades of experience to help collectors make informed decisions.'
-              },
-              {
-                icon: Users,
-                title: 'Collector Community',
-                description: 'We foster a welcoming community where collectors can share knowledge, showcase collections, and learn from experts.'
-              }
-            ].map((value, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg p-6 text-center">
-                <div className="p-4 bg-purple-100 rounded-lg inline-block mb-4">
-                  <value.icon className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
+        {/* Our Values */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {[
+            {
+              icon: Shield,
+              title: 'Authenticity Guaranteed',
+              description: 'Every coin we sell is professionally authenticated and graded by expert numismatists with full money-back guarantees.',
+            },
+            {
+              icon: Target,
+              title: 'Regional Expertise',
+              description: 'Our team specializes in South Asian numismatics, with deep knowledge of Pakistani, Mughal, and British Indian coins.',
+            },
+            {
+              icon: Users,
+              title: 'Collector Community',
+              description: 'We foster a welcoming community where collectors can share knowledge, showcase collections, and learn from experts.',
+            },
+          ].map((value, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg p-6">
+              <div className="p-3 bg-purple-100 rounded-lg inline-block mb-4">
+                <value.icon className="w-8 h-8 text-purple-600" />
               </div>
-            ))}
-          </div>
+              <h3 className="text-xl font-bold mb-3">{value.title}</h3>
+              <p className="text-gray-600">{value.description}</p>
+            </div>
+          ))}
         </div>
 
-        {/* Team */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Our Expert Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Our Expert Team */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+          <h2 className="text-3xl font-bold mb-6">Our Expert Team</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: 'Dr. James Harrington', role: 'Founder & Chief Numismatist', bio: '38 years experience, ancient coin specialist' },
-              { name: 'Sarah Mitchell', role: 'Head of Authentication', bio: 'Certified grader, former museum curator' },
-              { name: 'Robert Chen', role: 'Market Director', bio: 'Expert in US and world coins, auction veteran' },
-              { name: 'Maria Rodriguez', role: 'Customer Relations', bio: 'Collector advocate, 15 years with Taksila' }
+              {
+                name: 'Muhammad Talha',
+                role: 'Founder & Chief Numismatist',
+                expertise: '15 years experience, Pakistani & Mughal coins specialist',
+              },
+              {
+                name: 'Fatima Khan',
+                role: 'Head of Authentication',
+                expertise: 'Certified grader, former State Bank historian',
+              },
+              {
+                name: 'Ali Malik',
+                role: 'Market Director',
+                expertise: 'Expert in South Asian coins, auction specialist',
+              },
+              {
+                name: 'Sara Ahmed',
+                role: 'Customer Relations',
+                expertise: 'Collector advocate, numismatic researcher',
+              },
             ].map((member, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg p-6 text-center">
-                <div className="bg-purple-50 rounded-lg h-48 mb-4 flex items-center justify-center">
-                  <Users className="w-12 h-12 text-purple-400" />
+              <div key={index} className="text-center">
+                <div className="w-24 h-24 bg-purple-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <Users className="w-12 h-12 text-purple-600" />
                 </div>
-                <h3 className="font-semibold mb-1">{member.name}</h3>
-                <p className="text-purple-600 text-sm mb-2">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.bio}</p>
+                <h3 className="font-bold text-lg mb-1">{member.name}</h3>
+                <p className="text-purple-600 font-semibold mb-2">{member.role}</p>
+                <p className="text-sm text-gray-600">{member.expertise}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Achievements */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Milestones & Achievements</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { year: '2023', achievement: 'Launched online marketplace serving 50,000+ collectors' },
-              { year: '2020', achievement: 'Expanded to include rare world coins and bullion' },
-              { year: '2015', achievement: 'Opened authentication and grading service center' },
-              { year: '2008', achievement: 'Published "The Collector\'s Guide to Ancient Coins"' },
-              { year: '1995', achievement: 'Expanded to international shipping and exports' },
-              { year: '1985', achievement: 'Founded as family coin shop in New York' }
-            ].map((milestone, index) => (
-              <div key={index} className="flex items-center space-x-4 p-4 bg-white rounded-lg border border-gray-200">
-                <div className="text-2xl font-bold text-purple-600">{milestone.year}</div>
-                <div className="text-gray-700">{milestone.achievement}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Services */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">What We Offer</h2>
+        {/* What We Offer */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+          <h2 className="text-3xl font-bold mb-6">What We Offer</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
+                icon: Star,
                 title: 'Rare Coin Sales',
-                description: 'Curated collection of ancient, US, and world coins with full authentication'
+                description: 'Curated collection of Pakistani, Mughal, British India, and select international coins with full authentication',
               },
               {
+                icon: Target,
                 title: 'Professional Appraisal',
-                description: 'Expert valuation services for collections and individual coins'
+                description: 'Expert valuation services for collections and individual coins, specializing in South Asian numismatics',
               },
               {
+                icon: Shield,
                 title: 'Authentication & Grading',
-                description: 'Professional coin grading and certification services'
-              }
+                description: 'Professional coin grading and certification services with detailed provenance documentation',
+              },
             ].map((service, index) => (
-              <div key={index} className="bg-purple-50 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+              <div key={index} className="text-center">
+                <div className="p-3 bg-purple-100 rounded-lg inline-block mb-4">
+                  <service.icon className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
                 <p className="text-gray-600">{service.description}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="text-center p-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl text-white">
+        {/* Location & Contact */}
+        <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl shadow-lg p-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-3xl font-bold mb-4">Visit Our Office</h2>
+              <p className="text-purple-100 mb-4">
+                Located in the heart of Lahore, our showroom welcomes collectors to view our curated collection 
+                of historical coins and receive expert consultations.
+              </p>
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <MapPin className="w-5 h-5 mr-2" />
+                  <span>Pakistan</span>
+                </div>
+                <div className="flex items-center">
+                  <Star className="w-5 h-5 mr-2" />
+                  <span>By Appointment Only</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white/10 rounded-lg p-6">
+                <h3 className="text-2xl font-bold mb-2">Get Started</h3>
+                <p className="text-purple-100 mb-4">
+                  Join Pakistan's growing community of coin collectors
+                </p>
+                <div className="space-y-2">
+                  <Link href="/coins">
+                    <button className="w-full bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition">
+                      Browse Collection
+                    </button>
+                  </Link>
+                  <Link href="/contact">
+                    <button className="w-full bg-purple-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-900 transition">
+                      Contact Experts
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
-          <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-            Become part of the world's most trusted coin marketplace. Start your collecting journey with Taksila Coins today.
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Become part of Pakistan's most trusted coin marketplace. Start your collecting journey 
+            with Taksila Coins today and discover the rich history behind each piece.
           </p>
-          <div className="flex justify-center space-x-4">
-            <a href="/coins" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Browse Coins
-            </a>
-            <a href="/contact" className="border border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors">
-              Contact Experts
-            </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/coins">
+              <button className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                Browse Coins
+              </button>
+            </Link>
+            <Link href="/contact">
+              <button className="bg-white text-purple-600 border-2 border-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition">
+                Contact Experts
+              </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -76,9 +76,6 @@ export default function FavoritesPage() {
             <p className="text-xl text-purple-100 max-w-2xl mx-auto">
               Your personal collection of favorite antique and historical coins
             </p>
-            <div className="mt-4 text-sm text-purple-200">
-              Values shown in {formatPrice(100).split('100')[0]}100
-            </div>
           </motion.div>
         </div>
       </div>

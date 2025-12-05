@@ -11,6 +11,7 @@ export interface InvestmentTip {
     readTime: number;
     keyTakeaways: string[];
     content: string;
+    url?: string;
 }
 
 export const investmentTips: InvestmentTip[] = [
@@ -29,7 +30,8 @@ export const investmentTips: InvestmentTip[] = [
             'Consider various grade levels and price points',
             'Maintain liquidity with some easily sellable pieces'
         ],
-        content: 'A well-diversified numismatic portfolio should include classic United States coins such as half cents, large cents, early nickels, dimes, quarters, half dollars and silver dollars. You may also choose to invest in precious metals such as gold bullion coins. Classic gold coins ranging from one dollar gold coins through $20 gold double eagles will also provide diversification in your rare coin portfolio.'
+        content: 'A well-diversified numismatic portfolio should include classic United States coins such as half cents, large cents, early nickels, dimes, quarters, half dollars and silver dollars. You may also choose to invest in precious metals such as gold bullion coins. Classic gold coins ranging from one dollar gold coins through $20 gold double eagles will also provide diversification in your rare coin portfolio.',
+        url: 'https://one.bid/en/blog/449/investing-in-coins-strategies-for-building-a-numismatic-portfolio?utm_source=chatgpt.com'
     },
     {
         id: 'risk-management',
@@ -46,7 +48,8 @@ export const investmentTips: InvestmentTip[] = [
             'Maintain proper insurance for valuable collections',
             'Stay informed about market trends and news'
         ],
-        content: 'Risk management is crucial for successful coin investing. The primary risks include counterfeit coins, market . . .'
+        content: 'Risk management is crucial for successful coin investing. The primary risks include counterfeit coins, market . . .',
+        url: 'https://www.wholesalecoinsdirect.com/precious-metals-news/what-are-certified-coins-certified-coin-value-worth?utm_source=chatgpt.com'
     },
     {
         id: 'market-opportunities',
@@ -62,7 +65,8 @@ export const investmentTips: InvestmentTip[] = [
             'Identify collecting trends among younger demographics',
             'Research emerging markets and international opportunities'
         ],
-        content: 'Market opportunities in numismatics require careful analysis of emerging trends and demographic shifts. Younger collectors are showing increased interest in modern commemoratives and coins with historical significance, while international markets are experiencing rapid growth.'
+        content: 'Market opportunities in numismatics require careful analysis of emerging trends and demographic shifts. Younger collectors are showing increased interest in modern commemoratives and coins with historical significance, while international markets are experiencing rapid growth.',
+        url: 'https://www.ngccoin.com/news/'
     },
     {
         id: 'grading-education',
@@ -80,7 +84,8 @@ export const investmentTips: InvestmentTip[] = [
             'Use third-party grading for authentication and value',
             'Understand the importance of coin preservation'
         ],
-        content: 'Coin grading is the foundation of numismatic investing. The Sheldon Scale, ranging from 1 to 70, provides a standardized method for assessing coin condition. Understanding this system is essential for making informed investment decisions.'
+        content: 'Coin grading is the foundation of numismatic investing. The Sheldon Scale, ranging from 1 to 70, provides a standardized method for assessing coin condition. Understanding this system is essential for making informed investment decisions.',
+        url: 'https://www.pcgs.com/grades'
     }
 ];
 

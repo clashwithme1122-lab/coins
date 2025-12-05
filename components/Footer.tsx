@@ -15,13 +15,17 @@ const AnimatedCoin = () => {
         </div>
       </div>
       
-      {/* Coin details */}
+      {/* Coin details - multiple rings */}
       <div className="absolute inset-3 sm:inset-3 border-2 border-yellow-400 rounded-full opacity-50"></div>
       <div className="absolute inset-4 sm:inset-4 border border-yellow-300 rounded-full opacity-30"></div>
+      
+      {/* Additional decorative rings */}
+      <div className="absolute inset-1 sm:inset-1 border border-yellow-500 rounded-full opacity-20"></div>
       
       {/* Floating particles */}
       <div className="absolute -top-1 sm:-top-2 -left-1 sm:-left-2 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-yellow-400 rounded-full animate-pulse"></div>
       <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full animate-pulse delay-75"></div>
+      <div className="absolute top-0 sm:top-1 right-0 sm:right-1 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-yellow-300 rounded-full animate-pulse delay-150"></div>
       
       {/* Hover glow */}
       <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-xl"></div>
@@ -43,13 +47,17 @@ const AnimatedTrendingUp = () => {
         </div>
       </div>
       
-      {/* Icon details */}
+      {/* Icon details - multiple rings */}
       <div className="absolute inset-3 sm:inset-3 border-2 border-green-400 rounded-full opacity-50"></div>
       <div className="absolute inset-4 sm:inset-4 border border-green-300 rounded-full opacity-30"></div>
+      
+      {/* Additional decorative rings */}
+      <div className="absolute inset-1 sm:inset-1 border border-green-500 rounded-full opacity-20"></div>
       
       {/* Floating particles */}
       <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-pulse"></div>
       <div className="absolute -bottom-1 sm:-bottom-2 -left-1 sm:-left-2 w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse delay-75"></div>
+      <div className="absolute top-0 sm:top-1 left-0 sm:left-1 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-300 rounded-full animate-pulse delay-150"></div>
       
       {/* Hover glow */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-xl"></div>

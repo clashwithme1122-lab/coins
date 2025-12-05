@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { Calendar, User, ArrowRight, Clock } from 'lucide-react'
+import { useParams } from 'next/navigation'
+import { Calendar, User, Clock, ArrowLeft, Share2 } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const blogPosts = [
   {
@@ -211,94 +212,167 @@ Pakistan's coinage continues to evolve while maintaining its unique cultural and
   }
 ]
 
-export default function BlogPage() {
+export default function BlogDetailPage() {
+  const params = useParams()
+  const postId = parseInt(params.id as string)
+  
+  const post = blogPosts.find(p => p.id === postId)
+  
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog post not found</h1>
+          <Link href="/blog" className="text-purple-600 hover:text-purple-700">
+            ← Back to Blog
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  const handleShare = async () => {
+    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+    
+    if (navigator.share) {
+      // Use Web Share API for native sharing
+      try {
+        await navigator.share({
+          title: post.title,
+          text: post.excerpt,
+          url: currentUrl,
+        })
+      } catch (error: any) {
+        // Fallback to copying link if share is cancelled
+        if (error.name !== 'AbortError') {
+          navigator.clipboard.writeText(currentUrl)
+          alert('Link copied to clipboard!')
+        }
+      }
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(currentUrl)
+      alert('Link copied to clipboard!')
+    }
+  }
+  
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Numismatic Insights</h1>
-            <p className="text-xl text-purple-100 mb-8">
-              Expert articles on South Asian coin collecting, historical discoveries, and market trends
-            </p>
+      {/* Hero Section with Image */}
+      <div className="relative h-96 bg-gradient-to-br from-purple-600 to-purple-700">
+        <div className="absolute inset-0">
+          <img 
+            src={post.image} 
+            alt={post.title}
+            className="w-full h-full object-cover opacity-30"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+          <div className="text-white">
+            <Link 
+              href="/blog"
+              className="inline-flex items-center text-purple-200 hover:text-white mb-6 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Blog
+            </Link>
+            <span className="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-medium mb-4 inline-block">
+              {post.category}
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
+            <p className="text-xl text-purple-100 mb-6">{post.excerpt}</p>
+            
+            {/* Meta Information */}
+            <div className="flex items-center space-x-6 text-purple-100">
+              <div className="flex items-center">
+                <User className="w-5 h-5 mr-2" />
+                {post.author}
+              </div>
+              <div className="flex items-center">
+                <Calendar className="w-5 h-5 mr-2" />
+                {new Date(post.date).toLocaleDateString()}
+              </div>
+              <div className="flex items-center">
+                <Clock className="w-5 h-5 mr-2" />
+                {post.readTime}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Blog Posts Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
-            <div key={post.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-              {/* Post Image */}
-              <div className="h-48 relative overflow-hidden">
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-4 left-4">
-                  <span className="bg-white text-purple-600 px-3 py-1 rounded-full text-sm font-medium">
-                    {post.category}
-                  </span>
-                </div>
-              </div>
+      {/* Blog Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="prose prose-lg max-w-none">
+            {post.content.split('\n').map((paragraph, index) => {
+              if (paragraph.startsWith('##')) {
+                return (
+                  <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-gray-900">
+                    {paragraph.replace('##', '').trim()}
+                  </h2>
+                )
+              } else if (paragraph.startsWith('-')) {
+                return (
+                  <li key={index} className="ml-6 text-gray-600 mb-2">
+                    {paragraph.replace('-', '').trim()}
+                  </li>
+                )
+              } else if (paragraph.trim()) {
+                return (
+                  <p key={index} className="text-gray-600 mb-4 leading-relaxed">
+                    {paragraph}
+                  </p>
+                )
+              }
+              return null
+            })}
+          </div>
 
-              {/* Post Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-3">{post.title}</h3>
-                <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                
-                {/* Meta Information */}
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1" />
-                      {post.author}
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(post.date).toLocaleDateString()}
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {post.readTime}
-                  </div>
-                </div>
-
-                {/* Read More Button */}
-                <Link 
-                  href={`/blog/${post.id}`}
-                  className="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium transition-colors"
-                >
-                  Read More
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Link>
+          {/* Share Section */}
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Share this article</h3>
+                <p className="text-gray-600">Help others discover the fascinating world of numismatics</p>
               </div>
+              <button 
+                onClick={handleShare}
+                className="flex items-center text-purple-600 hover:text-purple-700 font-medium"
+              >
+                <Share2 className="w-5 h-5 mr-2" />
+                Share
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* Newsletter Signup */}
-      <div className="bg-purple-600 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Stay Updated with Numismatic News</h2>
-          <p className="text-xl text-purple-100 mb-8">
-            Get the latest coin collecting tips and historical discoveries delivered to your inbox
-          </p>
-          <div className="max-w-md mx-auto flex gap-4">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-300"
-            />
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Subscribe
-            </button>
+          {/* Related Articles */}
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Related Articles</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {blogPosts
+                .filter(p => p.id !== post.id)
+                .slice(0, 2)
+                .map(relatedPost => (
+                  <Link 
+                    key={relatedPost.id}
+                    href={`/blog/${relatedPost.id}`}
+                    className="block p-6 border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all"
+                  >
+                    <span className="text-sm text-purple-600 font-medium">{relatedPost.category}</span>
+                    <h4 className="text-lg font-semibold text-gray-900 mt-2 mb-2">{relatedPost.title}</h4>
+                    <p className="text-gray-600 text-sm line-clamp-2">{relatedPost.excerpt}</p>
+                    <div className="flex items-center text-sm text-gray-500 mt-3">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      {new Date(relatedPost.date).toLocaleDateString()}
+                      <span className="mx-2">•</span>
+                      <Clock className="w-4 h-4 mr-1" />
+                      {relatedPost.readTime}
+                    </div>
+                  </Link>
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
