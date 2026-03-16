@@ -7,17 +7,115 @@ import { useState } from 'react'
 
 const blogPosts = [
   {
+    id: 4,
+    title: 'How to Identify an Authentic Roman Denarius: A Collector’s Guide',
+    excerpt: 'Learn how to spot fake Roman coins. Discover expert techniques on weight, patina, and striking used by numismatists to authenticate an ancient Roman Denarius.',
+    content: `Spotting fake Roman coins requires expertise in analyzing weight, die strikes, and patina. 
+    
+## The Importance of Weight
+Ancient Roman mints were highly precise. A silver denarius usually weighs between 3.5 and 4.0 grams. Significant deviations often indicate a modern cast fake.
+
+## Die Strikes vs. Casting
+Genuine coins were struck with hammer and die, which leaves sharp details and flow lines. Cast fakes often have a "soapy" look with tiny "pitting" holes from air bubbles.
+
+## Analyzing the Patina
+An authentic patina (oxidation) takes centuries to form and is hard to replicate. If it can be easily scratched off or looks like paint, be cautious.`,
+    author: 'Taksila Experts',
+    date: '2026-03-01',
+    category: 'Authentication',
+    readTime: '10 min read',
+    image: '/assets/home.webp'
+  },
+  {
+    id: 5,
+    title: 'The Top 10 Most Valuable Mughal Coins and Their Current Market Worth',
+    excerpt: 'Explore the rarest gold and silver Mughal empire coins. See auction records, current market values, and what makes these Islamic antique coins so valuable.',
+    content: `Mughal coinage reached its aesthetic peak during the reigns of Jahangir and Shah Jahan.
+
+## Jahangir's Zodiac Mohurs
+Perhaps the most famous of all Islamic coins, these featured the zodiac sign of the month of minting. They are exceptionally rare and highly sought after by global museums.
+
+## The Gold Mohurs of Akbar
+Akbar introduced the 'Ilahi' type which was revolutionary for its time, standardizing purity and weight across the massive empire.
+
+## Silver Rupees of the Later Empire
+Even as the empire declined, the craftsmanship of the silver coinage remained high, providing a stable medium for trade across South Asia.`,
+    author: 'Taksila Experts',
+    date: '2026-03-05',
+    category: 'Market Trends',
+    readTime: '12 min read',
+    image: '/assets/home.webp'
+  },
+  {
+    id: 6,
+    title: 'Beginner\'s Guide to Investing in Ancient Coins for Long-Term Wealth',
+    excerpt: 'Start your numismatic investment portfolio. Learn which rare antique coins hold value, how to buy safely online, and secure expert-graded pieces from $85.',
+    content: `Antique coins are "tangible history" and have historically acted as a great hedge against inflation.
+
+## Focus on Condition
+In numismatics, 'Grade' is everything. A higher grade specimen can be worth 10x more than a worn one of the same type.
+
+## Rare Sovereigns and Denarii
+Focusing on iconic denominations like the Roman Denarius or the British Gold Sovereign provides higher liquidity when you decide to sell.
+
+## Diversify Your Eras
+Don't put all your capital into one empire. Balance your portfolio with Classical Greek, Roman Imperial, and Islamic gold pieces.`,
+    author: 'Taksila Experts',
+    date: '2026-03-10',
+    category: 'Investing',
+    readTime: '8 min read',
+    image: '/assets/home.webp'
+  },
+  {
+    id: 7,
+    title: 'Coin Grading Explained: PCGS vs NGC & Understanding Authenticity',
+    excerpt: 'Demystify ancient coin grading scales. We compare PCGS vs NGC and explain why a Certificate of Authenticity is vital before you buy rare coins online.',
+    content: `Professional grading removes the guesswork from coin collecting.
+
+## What is Slabbed Coinage?
+'Slabbed' coins are ultrasonically sealed in plastic holders by companies like NGC or PCGS, preserving their condition and verifying their grade.
+
+## The Sheldon Scale
+Most modern grading uses the 1-70 scale. For ancient coins, however, companies often focus more on 'Strike' and 'Surface' quality.
+
+## The Role of COAs
+A Certificate of Authenticity (COA) from a trusted dealer with 30+ years of experience is often just as valuable as a third-party grade for ancient pieces.`,
+    author: 'Taksila Experts',
+    date: '2026-03-12',
+    category: 'Grading',
+    readTime: '9 min read',
+    image: '/assets/home.webp'
+  },
+  {
+    id: 8,
+    title: 'Where to Buy Authenticated Antique Coins Online Safely in 2026',
+    excerpt: 'Avoid scams when building your collection. We review the safest marketplaces for buying authentic Roman, Greek, and Medieval coins with verified provenance.',
+    content: `Buying coins online requires due diligence.
+
+## Check the Provenance
+Always ask where the coin came from. Established dealers like Taksila Coins maintain records of the physical handling and origin of their specimens.
+
+## Avoid "Too Good to Be True" Deals
+If a gold Mughal mohur is being sold at half its market value on a generic marketplace, it is almost certainly a reproduction.
+
+## Utilize Expert Consultations
+Before spending significant capital, speak with a numismatist. We offer free consultations for high-value acquisitions.`,
+    author: 'Taksila Experts',
+    date: '2026-03-15',
+    category: 'Buying Guide',
+    readTime: '7 min read',
+    image: '/assets/home.webp'
+  },
+  {
     id: 1,
     title: 'Mughal Empire Coins: The Golden Era of Islamic Numismatics',
     excerpt: 'Explore the magnificent coinage of the Mughal Empire, from Babur\'s early issues to Aurangzeb\'s late period. Discover how these silver rupees and gold mohurs tell the story of one of history\'s greatest Islamic empires.',
     content: `The Mughal Empire (1526-1857) produced some of the most beautiful and historically significant coins in South Asian numismatics. These coins not only served as currency but also as powerful propaganda tools for the emperors.
 
 ## Early Mughal Coinage (1526-1556)
-
 Babur, the founder of the Mughal Empire, introduced the first Mughal coins based on the existing Delhi Sultanate designs. His son Humayun continued this tradition but faced challenges that led to his temporary exile.
 
 ## Akbar's Revolutionary Reforms (1556-1605)
-
 Emperor Akbar revolutionized Mughal coinage by:
 - Introducing the Ilahi calendar with unique dating
 - Creating the famous "Ilahi coins" with zodiac signs
@@ -25,7 +123,6 @@ Emperor Akbar revolutionized Mughal coinage by:
 - Establishing mints in major cities like Delhi, Agra, and Lahore
 
 ## The Artistic Peak: Jahangir and Shah Jahan (1605-1658)
-
 Jahangir introduced innovative features including:
 - Portraits of zodiac animals on gold mohurs
 - Poetic couplets praising the emperor
@@ -37,14 +134,12 @@ Shah Jahan's coins are renowned for:
 - Beautiful architectural motifs
 
 ## Aurangzeb's Orthodox Period (1658-1707)
-
 Aurangzeb returned to more traditional Islamic designs:
 - Removed figurative elements
 - Emphasized Quranic verses
 - Maintained high technical standards
 
 ## Collecting Mughal Coins Today
-
 Modern collectors value Mughal coins for:
 - Historical significance
 - Artistic merit
@@ -65,7 +160,6 @@ Rare specimens like Jahangir's zodiac mohurs can fetch thousands of dollars at a
     content: `The British period in India (1757-1947) represents a fascinating transition in South Asian numismatics, blending Western monetary systems with local traditions.
 
 ## East India Company Period (1757-1858)
-
 The East India Company issued coins in three presidencies:
 - Bombay Presidency: Featuring the Bombay Mint mark
 - Madras Presidency: Distinctive designs and denominations
@@ -77,7 +171,6 @@ Key characteristics:
 - Traditional Islamic elements maintained
 
 ## The Crown Takes Over (1858-1901)
-
 After the 1857 rebellion, the British Crown took direct control:
 - Queen Victoria portrait coins introduced
 - Standardized weight systems
@@ -88,21 +181,18 @@ Notable series:
 - Uniform coinage across all presidencies
 
 ## Edward VII and George V Era (1901-1936)
-
 Modernization continued with:
 - Improved minting technology
 - Higher relief portraits
 - Introduction of commemorative issues
 
 ## George VI and Pre-Independence (1936-1947)
-
 The final British period saw:
 - World War II emergency issues
 - Reduced silver content
 - Preparation for Indian independence
 
 ## Collecting British India Coins
-
 Popular collecting areas include:
 - Portrait series of different monarchs
 - Mint mark varieties (Bombay, Calcutta, Madras)
@@ -110,7 +200,6 @@ Popular collecting areas include:
 - Commemorative issues
 
 ## Investment Potential
-
 British India coins offer:
 - Historical significance
 - Affordable entry points
@@ -131,7 +220,6 @@ These coins represent an important bridge between traditional Islamic coinage an
     content: `Pakistan's coinage history reflects the young nation's journey from independence to modern statehood. Each series tells a story of economic development and national identity.
 
 ## First Series (1948-1961)
-
 Pakistan's first coins were issued in 1948:
 - Denominations: 1 pice, 1/2 anna, 1 anna, 2 annas, 4 annas, 8 annas, 1 rupee
 - Design: Featured the British monarch on obverse
@@ -139,7 +227,6 @@ Pakistan's first coins were issued in 1948:
 - Composition: Copper-nickel for most denominations
 
 ## Decimal Series (1961-1964)
-
 Major reform introduced decimal system:
 - 1 rupee = 100 paisa (replaced 16 annas)
 - New denominations: 1, 2, 5, 10, 25, 50 paisa, 1 rupee
@@ -147,7 +234,6 @@ Major reform introduced decimal system:
 - Improved minting quality
 
 ## Islamic Series (1964-1972)
-
 Under President Ayub Khan:
 - Removed British monarch portraits
 - Introduced Islamic motifs
@@ -155,7 +241,6 @@ Under President Ayub Khan:
 - Enhanced security features
 
 ## Bhutto Era (1972-1977)
-
 Significant changes included:
 - Introduction of new denominations
 - Nationalization of minting
@@ -163,7 +248,6 @@ Significant changes included:
 - Higher quality standards
 
 ## Modern Period (1977-Present)
-
 Contemporary developments:
 - Introduction of commemorative coins
 - Bimetallic coins for higher denominations
@@ -171,7 +255,6 @@ Contemporary developments:
 - International recognition
 
 ## Notable Commemorative Issues
-
 Pakistan has issued many commemorative coins:
 - Islamic Summit Conference (1974)
 - Cricket World Cup victories
@@ -179,7 +262,6 @@ Pakistan has issued many commemorative coins:
 - Historical figures
 
 ## Collecting Pakistani Coins
-
 Popular collecting areas:
 - Complete date sets of each series
 - Error coins and varieties
@@ -188,7 +270,6 @@ Popular collecting areas:
 - Mint mark varieties
 
 ## Investment Considerations
-
 Pakistani coins offer:
 - Historical significance
 - Affordable collecting
@@ -196,7 +277,6 @@ Pakistani coins offer:
 - Clear series organization
 
 ## Modern Developments
-
 Recent trends include:
 - Introduction of new security features
 - Bimetallic technology
