@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Ancient Roman Denarius",
+    "price": "$2,450",
+    "weight": "3.8g",
+    "year": "150 AD",
+    "description": "Rare silver denarius from Emperor Marcus Aurelius reign. This exceptional coin features the portrait of the emperor on the obverse and various military symbols on the reverse. The coin has been professionally graded and authenticated by leading numismatic experts.",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "Extremely rare - Only 200 known specimens in existence"
+  },
+  {
+    "id": 2,
+    "title": "Greek Silver Tetradrachm",
+    "price": "$3,200",
+    "weight": "17.2g",
+    "year": "350 BC",
+    "description": "Classical Athenian silver coin with owl design. This beautiful tetradrachm features the iconic owl of Athena on the reverse and the goddess herself on the obverse. A true masterpiece of ancient Greek coinage.",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "Historically significant - Classical Athens period"
+  },
+  {
+    "id": 3,
+    "title": "Medieval Gold Florin",
+    "price": "$5,800",
+    "weight": "3.5g",
+    "year": "1252 AD",
+    "description": "Florentine gold coin from Renaissance period. This beautiful gold florin features the fleur-de-lis symbol and was widely used throughout medieval Europe as a reliable currency.",
+    "frontImage": "/assets/dummycoin.jpg",
+    "backImage": "/assets/dummycoin.jpg",
+    "weightImage": "/assets/dummycoinweight..jpg",
+    "historicalValue": "First European gold coin since Roman times"
+  },
+  {
+    "title": "American Eagle",
+    "price": "2500",
+    "weight": "2.5g",
+    "year": "2002",
+    "description": "Pure Coin with solid gold inside and outside",
+    "frontImage": "https://res.cloudinary.com/dvzojxwma/image/upload/f_auto,q_auto/v1764748744/coins/ozqxpupyz8ldldgoh4pn.jpg",
+    "backImage": "https://res.cloudinary.com/dvzojxwma/image/upload/f_auto,q_auto/v1764748744/coins/g2vukeno9806xbrq6qqs.webp",
+    "weightImage": "https://res.cloudinary.com/dvzojxwma/image/upload/f_auto,q_auto/v1764748745/coins/rfi16zj8m2iipvzovls3.png",
+    "historicalValue": "has very impact",
+    "id": 4
+  }
+]

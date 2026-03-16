@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://taksila-nu.vercel.app/sitemap.xml
